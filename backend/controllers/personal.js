@@ -56,12 +56,12 @@ class Personal {
         from cte 
         join contract_to_cte c on c.cte_id=cte.id
         join contracts b on contract_id=b.id
-        where b.contract_date > ? and b.contract_date < ?
+        where b.contract_date > ? and b.contract_date < ? and b.provider_title = ?
         group by title 
         order by 2 desc
         limit 5`,
       {
-        replacements: [req.query.firstDay,req.query.lastDay],
+        replacements: [req.query.firstDay,req.query.lastDay,PROVIDER_TITLE],
         type: Sequelize.QueryTypes.SELECT,
       } 
     );
