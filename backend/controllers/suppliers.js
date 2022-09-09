@@ -5,11 +5,11 @@ class Suppliers {
   
   async getPriceDynamics(req, res) {
 
-    // if (!req.body) return response.sendStatus(400);
+    if (!req.body) return response.sendStatus(400);
     
-    // // const list = await models.Students.findAll({
-    // //   attributes: ["id"],
-    // // });
+    const list = await models..findAll({
+      attributes: ["id"],
+    });
 
     // var priceDynamics= list.map()
     
