@@ -1,20 +1,31 @@
 const models = require("../models");
-const { Op } = require("sequelize");
+const { Sequelize } = require("sequelize");
+const sequelize = require("../db");
 
 class Suppliers {
   
   async getPriceDynamics(req, res) {
 
     if (!req.body) return response.sendStatus(400);
-    
-    const list = await models..findAll({
-      attributes: ["id"],
-    });
+    console.log(req.query);
+
+    const list = await sequelize.query(
+      `SELECT c.contract_date AS date , quantity AS count
+      FROM contract_to_cte
+      JOIN contracts c ON c.id = contract_to_cte.contract_id
+      WHERE contract_to_cte.cte_id in (SELECT id
+                    FROM cte
+                    WHERE category = ? )`,
+      {
+        replacements: [req.query.category],
+        type: Sequelize.QueryTypes.SELECT,
+      } 
+    );
 
     // var priceDynamics= list.map()
     
     // {
-    //   data: ,
+    //   data: , 
     //   value: ,
     //   type:
     // }
@@ -24,7 +35,7 @@ class Suppliers {
     // }
     // let new_prices = prices.map(price => price * 1.06);
 
-    return res.json(courseCount);
+    return res.json(list);
   }
 
   async getContracts(req, res) {
