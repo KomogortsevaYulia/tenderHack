@@ -7,7 +7,7 @@ class Suppliers {
 
     if (!req.body) return response.sendStatus(400);
     
-    const list = await models..findAll({
+    const list = await models.findAll({
       attributes: ["id"],
     });
 
