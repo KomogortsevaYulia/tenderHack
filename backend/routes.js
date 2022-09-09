@@ -16,6 +16,8 @@ router.get("/suppliers/contractsSpecifications", suppliers.getContractsSpecifica
 //популярных за месяц 5 товаров у поставщиков по всей платформе
 router.get("/suppliers/popularProducts", suppliers.getPopularProducts);
 
+//топ поставщиков по выбранной категории
+router.get("/suppliers/popularsuppliers", suppliers.getPopularSuppliers);
 
 
 //по динамике количества по определенной категории 
