@@ -6,20 +6,13 @@ const categories=require("./controllers/categories")
 //маршрут всех категорий
 router.get("/categories", categories.get);
 
-//по динамике цен по определенной категории
-router.put("suppliers/categories/priceDynamics", suppliers.getPriceDynamics);
+//по динамике количества по определенной категории 
+router.get("/suppliers/categories/dynamics", suppliers.getPriceDynamics);
 
 //по проданным товарам выбранной категории ,разделенным по характеристикам
-router.put("suppliers/categories/contractsSpecifications", suppliers.getContracts);
+router.get("/suppliers/contractsSpecifications", suppliers.getContractsSpecifications);
 
 //популярных за месяц 5 товаров у поставщиков по всей платформе
-router.get("suppliers/popularProducts", suppliers.getPopularProducts);
-
-//популярных за месяц 5 товаров у поставщиков по выбранной категории
-router.get("suppliers/categories/popularProducts", suppliers.getPopularProductsCategories);
-
-
-//популярных за месяц товаров поставщика
-//router.get("/categories", categories.get);
+router.get("/suppliers/popularProducts", suppliers.getPopularProducts);
 
 module.exports = router;
