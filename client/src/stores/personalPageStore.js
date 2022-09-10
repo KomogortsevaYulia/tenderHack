@@ -39,6 +39,10 @@ export const usePersonalPageStore = defineStore("personalPageStore", () => {
         categories
     } = storeToRefs(vocabulariesStore)
 
+    async function fetchProviderClients() {
+
+    }
+
     async function fetchAnalogProviders() {
          let params = {
             // 'firstDay': format(dbeg.value, 'dd.MM.yy'),
@@ -167,6 +171,7 @@ export const usePersonalPageStore = defineStore("personalPageStore", () => {
         fetchActiveCategoryQuantityDynamic,
         fetchActiveCategorySpecifications,
         fetchPopularProducts,
+        fetchProviderClients,
         refetchAll,
 
         typesContracts,
