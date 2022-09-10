@@ -1,5 +1,5 @@
-const PROVIDER_TITLE='ООО "Жизнь офиса"' //'ООО "ОФИСМАГ"';
+const PROVIDER_TITLE='ООО "ОФИСМАГ"';
 module.exports = {
     PROVIDER_TITLE
-};
+  };
   

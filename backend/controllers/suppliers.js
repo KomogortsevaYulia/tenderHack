@@ -110,9 +110,9 @@ class Suppliers {
                                                                      FROM cte
                                                                      WHERE category = ?))) t
         GROUP BY category)
-SELECT category, 1.0 * tbl.count / (SELECT max(count) FROM tbl)
+SELECT category, cast (100.0 * tbl.count / (SELECT max(count) FROM tbl) as INT) as percent
 FROM tbl
-ORDER BY 2 DESC `,
+ORDER BY 2 DESC limit 3 offset 1`,
       {
         replacements: [req.query.category],
         type: Sequelize.QueryTypes.SELECT,

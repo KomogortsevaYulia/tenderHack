@@ -16,6 +16,7 @@ const {
     colorSpecificationsItemsChartData,
     popularSuppliersItems,
     popularProductsItems,
+    relativeCategories,
 } = storeToRefs(globalPageStore)
 
 const {
@@ -34,11 +35,21 @@ const {
         </select>
     </ul>
     <div class="row mt-4">
-        <div class="col-7">
+        <div class="col-lg-7 pe-lg-5 col-12 pt-2 ps-0">
             <Echart :chart-data="quantityDynamicsChartData"/>
         </div>
-        <div class="col-5">
+        <div class="col-lg-5 border rounded col-12 pt-2">
             <Echart :chart-data="colorSpecificationsItemsChartData"/>
+        </div>
+    </div>
+
+    <div class="row mt-4 ">
+        <div class="alert alert-primary col" role="alert">
+            
+            {{activeCategory}} продаются так же с:<br>
+            <span v-for="i in relativeCategories">
+                {{i.percent}}% - {{i.category}} <br>
+            </span>
         </div>
     </div>
 

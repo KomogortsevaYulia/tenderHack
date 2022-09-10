@@ -14,6 +14,7 @@ export const useGlobalPageStore = defineStore("globalPageStore", () => {
     const colorSpecificationsItems = ref([])
     const popularSuppliersItems = ref([])
     const popularProductsItems = ref([])
+    const relativeCategories = ref([])
     const dbeg = ref(add(new Date(), {
         years: -3
     }))
@@ -61,6 +62,18 @@ export const useGlobalPageStore = defineStore("globalPageStore", () => {
         colorSpecificationsItems.value = r.data;
     }
 
+    async function fetchActiveCategoryRelativeCategories() {
+        let params = {
+            'category': activeCategory.value,
+            'firstDay': format(dbeg.value, 'dd.MM.yy'),
+            'lastDay': format(dend.value, 'dd.MM.yy')
+        }
+        let r = await axios.get('/api/suppliers/associatedCte', {
+            params
+        })
+        relativeCategories.value = r.data;
+    }
+
     async function fetchActiveCategoryQuantityDynamic() {
         let r = await axios.get("/api/suppliers/categories/dynamics", {
             params: {
@@ -83,6 +96,7 @@ export const useGlobalPageStore = defineStore("globalPageStore", () => {
             fetchActiveCategoryQuantityDynamic(),
             fetchPopularSuppliers(),
             fetchPopularProducts(),
+            fetchActiveCategoryRelativeCategories(),
         ])
     }
 
@@ -96,17 +110,6 @@ export const useGlobalPageStore = defineStore("globalPageStore", () => {
     })
 
     const colorSpecificationsItemsChartData = computed(() => {
-        // let options={};
-        // if (colorSpecificationsItems.value.length<7){
-        //     options={
-        //         legend: {
-        //         orient: 'vertical',
-        //         left: 'left'
-        //       }
-        //     }
-        // }
-
-        // console.log(options)
 
         return {
             legend: {
@@ -120,17 +123,30 @@ export const useGlobalPageStore = defineStore("globalPageStore", () => {
                 trigger: 'item'
                 
             },
-            // ...options,
+            title: {
+                text: "Закупки по характеристикам",
+                left: "center",
+                top: "top",
+                textStyle: {
+                  fontSize: '1.25rem',
+                  fontWeight: 'normal'
+                },
+                
+              },
             series: [
                 {
-                    name: 'Access From',
+                    name: 'Количество закупок с данной хактеристикой',
                     type: 'pie',
                     radius: ['30%', '70%'],
-                    avoidLabelOverlap: false,
+                    avoidLabelOverlap: true,
                     label: {
                         show: false,
-                        position: 'center'
+                        position:'inner',
+                        color: 'transparent'
                     },
+                    // labelLine:{
+                    //     show: false
+                    // },
                     emphasis: {
                         label: {
                             show: true,
@@ -160,6 +176,15 @@ export const useGlobalPageStore = defineStore("globalPageStore", () => {
                   },
                   saveAsImage: {}
                 }
+              },
+              title: {
+                text: "Динамика закупок",
+                left: "center",
+                top: "top",
+                textStyle: {
+                  fontSize: '1.25rem',
+                  fontWeight: 'normal'
+                },
               },
               dataZoom: [
                 {
@@ -197,11 +222,13 @@ export const useGlobalPageStore = defineStore("globalPageStore", () => {
                 }
             },
             yAxis: {
-                type: 'value'
+                type: 'value',
+                position: 'left',
+                offset: 45
             },
             series: [
                 {
-                    name: 'Динамика заключенных контрактов',
+                    name: 'Закупки',
                     type: 'line',
                     stack: 'Total',
                     smooth: true,
@@ -236,6 +263,7 @@ export const useGlobalPageStore = defineStore("globalPageStore", () => {
         fetchActiveCategorySpecifications,
         fetchPopularProducts,
 
+        relativeCategories,
         activeCategory,
         quantityDynamicsChartData,
         colorSpecificationsItemsChartData,
