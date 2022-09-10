@@ -1,15 +1,15 @@
 const models = require("../models");
 const { Sequelize } = require("sequelize");
 const sequelize = require("../db");
-const  { format, compareAsc } =require( 'date-fns');
-const {PROVIDER_TITLE} = require("../consts");
+const { format, compareAsc } = require('date-fns');
+const { PROVIDER_TITLE } = require("../consts");
 
- 
+
 
 class Personal {
-  
 
-async getDynamics(req, res) {
+
+  async getDynamics(req, res) {
 
     if (!req.body) return response.sendStatus(400);
     const list = await sequelize.query(
@@ -19,9 +19,9 @@ async getDynamics(req, res) {
 	  JOIN cte b ON b.id = contract_to_cte.cte_id
       WHERE c.contract_date > ? and c.contract_date < ? and c.provider_title = ? `,
       {
-        replacements: [req.query.firstDay,req.query.lastDay,PROVIDER_TITLE],
+        replacements: [req.query.firstDay, req.query.lastDay, PROVIDER_TITLE],
         type: Sequelize.QueryTypes.SELECT,
-      } 
+      }
     );
     return res.json(list);
   }
@@ -38,20 +38,20 @@ async getDynamics(req, res) {
       where b.contract_date > ? and b.contract_date < ? and cte.category=? and d.name=?
       group by d.value
       order by 2 desc`,
-    {
-      replacements: [req.query.firstDay,req.query.lastDay,req.query.category,req.query.name],
-      type: Sequelize.QueryTypes.SELECT,
-    } 
-  );
+      {
+        replacements: [req.query.firstDay, req.query.lastDay, req.query.category, req.query.name],
+        type: Sequelize.QueryTypes.SELECT,
+      }
+    );
     return res.json(list);
   }
 
   async getPopularProducts(req, res) {
 
     if (!req.body) return response.sendStatus(400);
-  
+
     const list = await sequelize.query(
-        `		   
+      `		   
         select title,count(*)
         from cte 
         join contract_to_cte c on c.cte_id=cte.id
@@ -61,21 +61,21 @@ async getDynamics(req, res) {
         order by 2 desc
         limit 10`,
       {
-        replacements: [req.query.firstDay,req.query.lastDay,PROVIDER_TITLE],
+        replacements: [req.query.firstDay, req.query.lastDay, PROVIDER_TITLE],
         type: Sequelize.QueryTypes.SELECT,
-      } 
+      }
     );
 
-   
+
     return res.json(list);
   }
 
   async getCategories(req, res) {
 
     if (!req.body) return response.sendStatus(400);
-  
+
     const list = await sequelize.query(
-        `		   
+      `		   
         select cte.category,count(*)
         from cte 
         join contract_to_cte c on c.cte_id=cte.id
@@ -84,21 +84,21 @@ async getDynamics(req, res) {
         group by cte.category
         order by 2 desc limit 5`,
       {
-        replacements: [req.query.firstDay,req.query.lastDay,PROVIDER_TITLE],
+        replacements: [req.query.firstDay, req.query.lastDay, PROVIDER_TITLE],
         type: Sequelize.QueryTypes.SELECT,
-      } 
+      }
     );
 
-   
+
     return res.json(list);
   }
 
   async getTypesContracts(req, res) {
 
     if (!req.body) return response.sendStatus(400);
-  
+
     const list = await sequelize.query(
-        `		   
+      `		   
         WITH average as (
             select AVG(id)*0.25 as a from cte
         )
@@ -113,20 +113,20 @@ async getDynamics(req, res) {
             group by value
             `,
       {
-        replacements: [req.query.firstDay,req.query.lastDay,PROVIDER_TITLE],
+        replacements: [req.query.firstDay, req.query.lastDay, PROVIDER_TITLE],
         type: Sequelize.QueryTypes.SELECT,
-      } 
+      }
     );
 
-   
+
     return res.json(list);
   }
 
-    async getAnalogProviders(req, res) {
-      if (!req.body) return response.sendStatus(400);
+  async getAnalogProviders(req, res) {
+    if (!req.body) return response.sendStatus(400);
 
-      const list = await sequelize.query(
-        `	SELECT contracts.provider_title, count(*), sum(ctc.amount)
+    const list = await sequelize.query(
+      `	SELECT contracts.provider_title, count(*), sum(ctc.amount)
 FROM contracts
 JOIN contract_to_cte ctc on contracts.id = ctc.contract_id
 WHERE customer_title in (SELECT customer_title
@@ -150,12 +150,36 @@ LIMIT 10`,
     return res.json(list);
   }
 
+  async getCteForRecommendations (req, res) {
+    if (!req.body) return response.sendStatus(400);
 
-  async getAssociatedCte (req, res) {
+    const list = await sequelize.query(
+      `	  select cte.title, CAST (AVG( c.amount / c.quantity )  AS INT),count(*)
+      from cte 
+      join contract_to_cte c on c.cte_id=cte.id
+      join contracts b on contract_id=b.id
+      where b.customer_title = ?
+and cte.title in (select cte.title 
+      from cte 
+      join contract_to_cte c on c.cte_id=cte.id
+      join contracts b on contract_id=b.id
+      where b.provider_title = ? )
+group by cte.title 
+order by 3 DESC`,
+      {
+        replacements: [req.query.title, PROVIDER_TITLE],
+        type: Sequelize.QueryTypes.SELECT,
+      }
+    );
+    return res.json(list);
+  }
+
+
+  async getAssociatedCte(req, res) {
 
     if (!req.body) return response.sendStatus(400);
 
-    const category= await sequelize.query(
+    const category = await sequelize.query(
       ` select cte.category,count(*) as count
         from cte 
         join contract_to_cte c on c.cte_id=cte.id
@@ -169,8 +193,8 @@ LIMIT 10`,
       }
     );
 
-    let data=await Promise.all(category.map(async x => {
-        let query = await sequelize.query(`	WITH tbl as (SELECT category, count(*) as count
+    let data = await Promise.all(category.map(async x => {
+      let query = await sequelize.query(`	WITH tbl as (SELECT category, count(*) as count
         FROM (SELECT DISTINCT cte.category as category, contract_id
               FROM contract_to_cte
                        JOIN cte ON cte.id = contract_to_cte.cte_id
@@ -183,14 +207,14 @@ LIMIT 10`,
         SELECT category, cast (100.0 * tbl.count / (SELECT max(count) FROM tbl) as INT) as percent
         FROM tbl
         ORDER BY 2 DESC limit 3 offset 1`, {
-          replacements: [x.category],
-          type: Sequelize.QueryTypes.SELECT,
-        } )
-        return {
-            'category': x.category,
-            'count': x.count,
-            'items': query
-        }
+        replacements: [x.category],
+        type: Sequelize.QueryTypes.SELECT,
+      })
+      return {
+        'category': x.category,
+        'count': x.count,
+        'items': query
+      }
     }))
 
     return res.json(data);
