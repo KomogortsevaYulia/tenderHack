@@ -5,9 +5,12 @@ import {storeToRefs} from "pinia";
 import Echart from '../components/Charts/Echart.vue'
 import {usePersonalPageStore} from "@/stores/personalPageStore";
 import {onBeforeRouteUpdate} from "vue-router";
+import BModal from "@/components/BModal.vue";
+import {ref} from "vue";
 
 const vocabulariesStore = useVocabulariesStore();
 const personalPageStore = usePersonalPageStore();
+const modalRef = ref()
 
 const {
     activeCategory,
@@ -24,6 +27,12 @@ const {
     loadingAnalogProviders,
     activePeriod,
 } = storeToRefs(personalPageStore)
+
+
+function clientClick() {
+    modalRef.value.show()
+    personalPageStore.fetchProviderClients();
+}
 
 const {
     categories
@@ -44,19 +53,10 @@ const {
         <div class="col-12">
             <Echart :chart-data="quantityDynamicsChartData" :loading="loadingActiveCategoryQuantityDynamic"/>
         </div>
-<!--        <div class="col-5">-->
-<!--            <Echart :chart-data="colorSpecificationsItemsChartData"/>-->
-<!--        </div>-->
     </div>
 
-<!--    <PopularItems class="mt-4 mb-4" title="Топ поставщиков" :items="popularSuppliersItems" v-slot="{item}">-->
-<!--        <h5>{{ item.provider_title }}</h5>-->
-<!--        <div class="badge bg-primary me-2">ИНН: {{ item.provider_inn }}</div>-->
-<!--        <div class="badge bg-primary me-2">КПП: {{ item.provider_kpp }}</div>-->
-<!--        <div class="badge bg-gradient1">Закупок: {{ item.count }}</div>-->
-<!--    </PopularItems>-->
     <PopularItems class="mt-4" title="Поставщики выставляющие закупки в ваших категориях" :loading="loadingAnalogProviders" :items="analogProviders" v-slot="{item}">
-        <div class="d-flex flex-column justify-content-center align-items-center h-100">
+        <div class="d-flex flex-column justify-content-center align-items-center h-100"  @click="clientClick">
             <div class="flex-grow-1 d-flex pb-2 fw-bold align-items-center text-center">{{ item.provider_title }}</div>
             <div class="badge bg-gradient1 align-self-stretch mb-1">Закупок: {{ item.count }}</div>
             <div class="badge bg-gradient1 align-self-stretch">Объем закупок: {{ item.sum }}₽</div>
@@ -100,6 +100,10 @@ const {
     </PopularItems>
 
     <div class="mb-4"></div>
+
+    <BModal ref="modalRef" size="lg">
+        123
+    </BModal>
 
 </template>
 
