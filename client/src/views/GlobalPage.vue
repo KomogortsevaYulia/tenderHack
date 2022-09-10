@@ -65,10 +65,10 @@ const {
         </div>
     </div>
     <div class="row mt-4">
-        <div class="col-lg-7 pe-lg-5 col-12 pt-2 ps-0">
+        <div class=" pe-lg-5 col-12 pt-2 ps-0" :class="{ 'col-lg-7': colorSpecificationsItemsChartData.series?.data?.length > 0 }">
             <Echart :chart-data="quantityDynamicsChartData" :loading="loadingActiveCategoryQuantityDynamic" />
         </div>
-        <div class="col-lg-5 border rounded col-12 pt-2">
+        <div class="col-lg-5 border rounded col-12 pt-2" v-if="colorSpecificationsItemsChartData.series?.data?.length > 0">
             <Echart :chart-data="colorSpecificationsItemsChartData" :loading="loadingActiveCategorySpecifications" />
         </div>
     </div>
@@ -86,8 +86,9 @@ const {
     <PopularItems class="mt-4 mb-4" title="Топ поставщиков" :items="popularSuppliersItems" v-slot="{item}" :loading="loadingPopularSuppliers">
         <h5>{{ item.provider_title }}</h5>
         <div class="badge bg-primary me-2">ИНН: {{ item.provider_inn }}</div>
-        <div class="badge bg-primary me-2">КПП: {{ item.provider_kpp }}</div>
+        <div v-if=item.provider_kpp class="badge bg-primary me-2">КПП: {{ item.provider_kpp }}</div>
         <div class="badge bg-gradient1">Закупок: {{ item.count }}</div>
+        
     </PopularItems>
 
     <div class="mb-4"></div>

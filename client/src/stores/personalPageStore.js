@@ -124,7 +124,7 @@ export const usePersonalPageStore = defineStore("globalPageStore", () => {
                 'lastDay': format(dend.value, 'dd.MM.yy'),
             }
         })
-        quantityDynamicItems.value = _(r.data).map(x => {
+        typesContracts.value = _(r.data).map(x => {
             return {
                 date: new Date(x.date),
                 count: x.count
@@ -134,7 +134,7 @@ export const usePersonalPageStore = defineStore("globalPageStore", () => {
 
     async function refetchAll() {
         await Promise.all([
-            fetchActiveCategorySpecifications(),
+            // fetchActiveCategorySpecifications(),
             fetchPopularCategory(),
             fetchActiveCategoryQuantityDynamic(),
             fetchTypesContracts(),

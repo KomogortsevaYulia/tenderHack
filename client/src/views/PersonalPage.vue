@@ -58,7 +58,7 @@ const {
         <div class="alert alert-primary col" role="alert">
 
             Распределение закупок: <br>
-            
+
             <span v-for="i in typesContracts">
                 {{i.value}} - {{i.count}} <br>
             </span>
@@ -71,9 +71,9 @@ const {
             <div class="badge bg-gradient1 align-self-stretch">Закупок: {{ item.count }}</div>
             <div class="alert alert-primary col" role="alert">
 
-            {{item.category}} продаются так же с:<br>
+            В качестве сопутствующих товаров закупаются
             <span v-for="i in item.items">
-                {{i.percent}}% - {{i.category}} <br>
+                в  <span style="font-weight: bold;">{{i.percent}}%</span> случаях <span style="font-weight: bold;">{{i.category.toLowerCase()}}</span>,
             </span>
             </div>
         </div>
