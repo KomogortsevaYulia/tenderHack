@@ -2,6 +2,7 @@ const Router = require("express");
 const router = new Router();
 const suppliers = require("./controllers/suppliers");
 const personal = require("./controllers/personal");
+const opponent=require("./controllers/opponent")
 const categories=require("./controllers/categories")
 
 //маршрут всех категорий
@@ -25,13 +26,10 @@ router.get("/suppliers/associatedCte", suppliers.getAssociatedCte);
 // востребованные категории
 router.get("/suppliers/popularCategory", suppliers.getPopularCategory);
 
-
+///////////////////////////////////////////////////////////////////////////////////
 
 //по динамике количества по категориям продавца
 router.get("/personal/dynamics", personal.getDynamics);
-
-//???????????????????????????????????по проданным товарам ,разделенным по характеристикам
-router.get("/personal/contractsSpecifications", personal.getContractsSpecifications);
 
 //популярных за месяц 5 товаров у поставщика
 router.get("/personal/popularProducts", personal.getPopularProducts);
@@ -47,5 +45,15 @@ router.get("/personal/getAnalogProviders",personal.getAnalogProviders);
 
 //сопутсвующие товары данного поставщика
 router.get("/personal/getAssociatedCte",personal.getAssociatedCte);
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+//сопутсвующие товары данного поставщика
+router.get("/opponent/getClientByOpponent",opponent.getClientByOpponent);
+
+
 
 module.exports = router;
