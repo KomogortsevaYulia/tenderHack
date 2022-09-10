@@ -25,7 +25,6 @@ const {
 
 <template>
 
-    <h1>Глобальный рейтинг поставщиков</h1>
     <ul class="navbar-nav mt-4">
         <select v-model="activeCategory" class="form-control">
             <option :value="c.code" v-for="c in categories">{{ c.label }}</option>
@@ -49,6 +48,7 @@ const {
 
     <div>Похожие поставщики</div>
     <div>Выводим заказчиков этих постовщиков которые покапают наши товары</div>
+    <div>Сопотсвтующие категории</div>
 
     <PopularItems class="mt-4" title="Топ закупок" :items="popularProductsItems" v-slot="{item}">
         <div class="d-flex flex-column justify-content-center align-items-center h-100">

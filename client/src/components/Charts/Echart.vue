@@ -3,7 +3,7 @@ import * as echarts from 'echarts';
 import {onMounted, ref, watch} from "vue";
 
 const dynamicLinearChartRef = ref();
-const chart = ref(null);
+let chart = null;
 
 const props = defineProps({
     chartData: {
@@ -12,10 +12,10 @@ const props = defineProps({
 })
 
 function updateChart() {
-    if (chart.value == null) {
-        chart.value = echarts.init(dynamicLinearChartRef.value);
+    if (chart == null) {
+        chart = echarts.init(dynamicLinearChartRef.value);
     }
-    chart.value.setOption(props.chartData, true);
+    chart.setOption(props.chartData, true);
 }
 
 watch(() => props.chartData, () => {
