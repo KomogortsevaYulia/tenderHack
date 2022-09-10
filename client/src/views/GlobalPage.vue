@@ -4,7 +4,7 @@ import PopularItems from '../components/PopularItems.vue'
 import {useVocabulariesStore} from "@/stores/vocabulariesStore";
 import {storeToRefs} from "pinia";
 import {useGlobalPageStore} from "@/stores/globalPageStore";
-import DynamicLineChart from '../components/Charts/DynamicLineChart.vue'
+import Echart from '../components/Charts/Echart.vue'
 import PieChart from '../components/Charts/PieChart.vue'
 
 const vocabulariesStore = useVocabulariesStore();
@@ -13,6 +13,7 @@ const globalPageStore = useGlobalPageStore();
 const {
     activeCategory,
     quantityDynamicsChartData,
+    colorSpecificationsItemsChartData,
 } = storeToRefs(globalPageStore)
 
 const {
@@ -32,10 +33,10 @@ const {
         </ul>
         <div class="row mt-4">
             <div class="col-8">
-                <DynamicLineChart :chart-data="quantityDynamicsChartData"/>
+                <Echart :chart-data="quantityDynamicsChartData"/>
             </div>
             <div class="col-4">
-                <PieChart/>
+                <Echart :chart-data="colorSpecificationsItemsChartData"/>
             </div>
         </div>
         <PopularItems title="Популярное в этом месяце"/>
