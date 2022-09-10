@@ -12,13 +12,13 @@ class Suppliers {
     if (!req.body) return response.sendStatus(400);
    
     const list = await sequelize.query(
-      `SELECT c.contract_date AS date , sum(quantity) AS count
+      `SELECT c.contract_date::date AS date , sum(quantity) AS count
       FROM contract_to_cte
       JOIN contracts c ON c.id = contract_to_cte.contract_id
       WHERE c.contract_date > ? and c.contract_date < ? and contract_to_cte.cte_id in (SELECT id
                     FROM cte
                     WHERE category = ? )
-                    group by  c.contract_date`,
+                    group by  c.contract_date::date`,
       {
         replacements: [req.query.firstDay,req.query.lastDay,req.query.category],
         type: Sequelize.QueryTypes.SELECT,
