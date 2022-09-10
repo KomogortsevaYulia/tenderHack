@@ -92,7 +92,7 @@ export const useGlobalPageStore = defineStore("globalPageStore", () => {
 
     watch(activeCategory, async () => {
         refetchAll()
-        localStorage.activeCategory = activeCategory
+        localStorage.activeCategory = activeCategory.value
     })
 
     const colorSpecificationsItemsChartData = computed(() => {
