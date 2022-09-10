@@ -59,7 +59,7 @@ async getDynamics(req, res) {
         where b.contract_date > ? and b.contract_date < ? and b.provider_title = ?
         group by title 
         order by 2 desc
-        limit 5`,
+        limit 10`,
       {
         replacements: [req.query.firstDay,req.query.lastDay,PROVIDER_TITLE],
         type: Sequelize.QueryTypes.SELECT,
@@ -103,9 +103,9 @@ async getDynamics(req, res) {
             select AVG(id)*0.25 as a from cte
         )
         SELECT 
-               CASE WHEN cte_id is null THEN 0
-                    WHEN cte_id < (select a from average)  THEN 1
-                    ELSE 2
+               CASE WHEN cte_id is null THEN 'Прямая закупка'
+                    WHEN cte_id < (select a from average)  THEN 'Котировочная сессия '
+                    ELSE 'Закупка по потребности'
                END as value, count(*)
             FROM contract_to_cte
              join contracts b on contract_id=b.id

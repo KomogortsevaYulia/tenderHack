@@ -126,7 +126,7 @@ export const usePersonalPageStore = defineStore("personalPageStore", () => {
                 'lastDay': format(dend.value, 'dd.MM.yy'),
             }
         })
-        quantityDynamicItems.value = _(r.data).map(x => {
+        typesContracts.value = _(r.data).map(x => {
             return {
                 date: new Date(x.date),
                 count: x.count
