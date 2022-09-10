@@ -82,7 +82,7 @@ class Personal {
         join contracts b on contract_id=b.id
         where b.contract_date > ? and b.contract_date < ? and b.provider_title = ?
         group by cte.category
-        order by 2 desc limit 5`,
+        order by 2 desc limit 50`,
       {
         replacements: [req.query.firstDay, req.query.lastDay, PROVIDER_TITLE],
         type: Sequelize.QueryTypes.SELECT,
@@ -126,7 +126,7 @@ class Personal {
     if (!req.body) return response.sendStatus(400);
 
     const list = await sequelize.query(
-      `	SELECT contracts.provider_title, count(*), sum(ctc.amount)
+      `	SELECT contracts.provider_title, count(*), CAST (sum(ctc.amount) AS INT)
 FROM contracts
 JOIN contract_to_cte ctc on contracts.id = ctc.contract_id
 WHERE customer_title in (SELECT customer_title
@@ -186,7 +186,7 @@ order by 3 DESC`,
         join contracts b on contract_id=b.id
         where b.provider_title = ?
         group by cte.category
-        order by 2 desc limit 5`,
+        order by 2 desc limit 50`,
       {
         replacements: [PROVIDER_TITLE],
         type: Sequelize.QueryTypes.SELECT,
