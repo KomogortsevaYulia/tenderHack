@@ -57,7 +57,8 @@ const {
     <div class="row mt-4 ">
         <div class="alert alert-primary col" role="alert">
 
-            Распределение закупок:<br>
+            Распределение закупок: <br>
+            
             <span v-for="i in typesContracts">
                 {{i.value}} - {{i.count}} <br>
             </span>
