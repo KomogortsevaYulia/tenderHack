@@ -5,7 +5,7 @@ import {storeToRefs} from "pinia";
 </script>
 
 <template>
-    <nav class="navbar navbar-dark bg-primary navbar-expand-lg">
+    <nav class="navbar  navbar-expand-lg sticky-top">
         <div class="container">
             <a class="navbar-brand" href="#">Поставщики</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"

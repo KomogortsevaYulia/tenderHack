@@ -26,7 +26,6 @@ const {
 </script>
 
 <template>
-    <div class="container">
         <h1>Глобальный рейтинг поставщиков</h1>
         <ul class="navbar-nav mt-4">
             <select v-model="activeCategory" class="form-control">
@@ -41,18 +40,21 @@ const {
                 <Echart :chart-data="colorSpecificationsItemsChartData"/>
             </div>
         </div>
-        <PopularItems class="mt-4 " title="Популярное в этом месяце" :items="popularProductsItems" v-slot="{item}">
-            <div>{{item.title}}</div>
-            <div class="badge bg-info">Закупок: {{item.count}}</div>
+
+        <PopularItems class="mt-4 mb-4" title="Топ поставщиков" :items="popularSuppliersItems" v-slot="{item}">
+            <h5>{{item.provider_title}}</h5>
+            <div class="badge bg-primary me-2">ИНН: {{item.provider_inn}}</div>
+            <div class="badge bg-primary me-2">КПП: {{item.provider_kpp}}</div>
+            <div class="badge bg-gradient1">Закупок: {{item.count}}</div>
         </PopularItems>
 
-        <PopularItems class="mb-4" title="Топ поставщиков" :items="popularSuppliersItems" v-slot="{item}">
-            <h4>{{item.provider_title}}</h4>
-            <div class="badge bg-info  me-2">ИНН: {{item.provider_inn}}</div>
-            <div class="badge bg-info  me-2">КПП: {{item.provider_kpp}}</div>
-            <div class="badge bg-warning">Количество контрактов: {{item.count}}</div>
+        <PopularItems class="mt-4" title="Популярное в этом месяце" :items="popularProductsItems" v-slot="{item}">
+            <div class="d-flex flex-column justify-content-center align-items-center h-100">
+                <div class="flex-grow-1 d-flex pb-2 fw-bold align-items-center text-center">{{item.title}}</div>
+                <div class="badge bg-gradient1 align-self-stretch">Закупок: {{item.count}}</div>
+            </div>
         </PopularItems>
-    </div>
+
 </template>
 
 
