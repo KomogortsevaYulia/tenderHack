@@ -1,5 +1,6 @@
 const models = require("../models");
-const { Sequelize } = require('sequelize');
+const { Sequelize } = require("sequelize");
+const sequelize = require("../db");
 
 class Opponent {
 

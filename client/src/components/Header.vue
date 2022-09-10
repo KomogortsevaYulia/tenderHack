@@ -4,7 +4,7 @@ import {storeToRefs} from "pinia";
 import {onBeforeRouteUpdate, useRoute} from "vue-router";
 import {computed, watch} from "vue";
 
-const route = `useRoute`()
+
 
 
 </script>
