@@ -2,8 +2,9 @@
 import Header from "@/components/Header.vue";
 import {useMainStore} from "@/stores/mainStore";
 import {onBeforeMount} from "vue";
-import Charts from "@/components/Charts.vue";
-import PopularItems from "@/components/PopularItems.vue";
+import GlobalPage from "@/views/GlobalPage.vue";
+import {useVocabulariesStore} from "@/stores/vocabulariesStore";
+import {storeToRefs} from "pinia";
 
 const mainStore = useMainStore();
 
@@ -11,15 +12,18 @@ onBeforeMount(() => {
     mainStore.init()
 })
 
+const vocabulariesStore = useVocabulariesStore();
+
+const {
+    categories
+} = storeToRefs(vocabulariesStore)
+
+
 </script>
 
 <template>
     <Header/>
-    <div class="container">
-        <Charts class="mt-4" />
-        <PopularItems title="Популярное в этом месяце" />
-        <PopularItems class="mt-4 " title="Топ поставщиков" />
-    </div>
+    <GlobalPage/>
     <div></div>
 </template>
 

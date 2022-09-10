@@ -2,12 +2,6 @@
 import {useVocabulariesStore} from "@/stores/vocabulariesStore";
 import {storeToRefs} from "pinia";
 
-const vocabulariesStore = useVocabulariesStore();
-
-const {
-    categories
-} = storeToRefs(vocabulariesStore)
-
 </script>
 
 <template>
@@ -18,14 +12,7 @@ const {
                     aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarNavDropdown">
-                <div class="flex-grow-1"></div>
-                <ul class="navbar-nav">
-                    <select name="" id="" class="form-control">
-                        <option :value="c.code" v-for="c in categories">{{c.label}}</option>
-                    </select>
-                </ul>
-            </div>
+
         </div>
     </nav>
 </template>
