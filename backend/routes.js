@@ -18,7 +18,7 @@ router.get("/suppliers/contractsSpecifications", suppliers.getContractsSpecifica
 router.get("/suppliers/popularProducts", suppliers.getPopularProducts);
 
 //топ поставщиков по выбранной категории
-router.get("/suppliers/popularsuppliers", suppliers.getPopularSuppliers);
+router.get("/suppliers/popularsuppliers", opponent.getPopularSuppliers);
 
 // сопутсвующие товары
 router.get("/suppliers/associatedCte", suppliers.getAssociatedCte);

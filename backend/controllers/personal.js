@@ -100,7 +100,7 @@ async getDynamics(req, res) {
     const list = await sequelize.query(
         `		   
         WITH average as (
-            select AVG(id) as a from cte
+            select AVG(id)*0.25 as a from cte
         )
         SELECT 
                CASE WHEN cte_id is null THEN 0

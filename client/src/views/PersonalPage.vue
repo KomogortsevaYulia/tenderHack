@@ -16,6 +16,7 @@ const {
     popularSuppliersItems,
     popularProductsItems,
     analogProviders,
+    typesContracts
 } = storeToRefs(globalPageStore)
 
 const {
@@ -52,6 +53,16 @@ const {
     <div>Похожие поставщики</div>
     <div>Выводим заказчиков этих постовщиков которые покапают наши товары</div>
     <div>Сопотсвтующие категории</div>
+
+    <div class="row mt-4 ">
+        <div class="alert alert-primary col" role="alert">
+
+            Распределение закупок:<br>
+            <span v-for="i in typesContracts">
+                {{i.value}} - {{i.count}} <br>
+            </span>
+        </div>
+    </div>
 
     <PopularItems class="mt-4" title="Топ категорий" :items="popularCategoryItems" v-slot="{item}">
         <div class="d-flex flex-column justify-content-center align-items-center h-100">

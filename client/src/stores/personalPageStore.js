@@ -12,6 +12,7 @@ import {usePeriod} from "@/stores/usePeriod";
 export const usePersonalPageStore = defineStore("globalPageStore", () => {
     const activeCategory = ref(localStorage.getItem("activeCategory") || "Велосипеды");
     const personalCategories = ref([]);
+    const typesContracts = ref([]);
     const quantityDynamicItems = ref([])
     const colorSpecificationsItems = ref([])
     const popularSuppliersItems = ref([])
@@ -99,12 +100,27 @@ export const usePersonalPageStore = defineStore("globalPageStore", () => {
         }).sortBy(x => x.date).value();
     }
 
+    async function fetchTypesContracts() {
+        let r = await axios.get("/api/personal/getTypesContracts", {
+            params: {
+                'firstDay': format(dbeg.value, 'dd.MM.yy'),
+                'lastDay': format(dend.value, 'dd.MM.yy'),
+            }
+        })
+        quantityDynamicItems.value = _(r.data).map(x => {
+            return {
+                date: new Date(x.date),
+                count: x.count
+            }
+        }).sortBy(x => x.date).value();
+    }
+
     async function refetchAll() {
         await Promise.all([
             fetchActiveCategorySpecifications(),
             fetchPopularCategory(),
             fetchActiveCategoryQuantityDynamic(),
-            // // fetchPopularSuppliers(),
+            fetchTypesContracts(),
             fetchAnalogProviders(),
             fetchPopularProducts(),
         ])
@@ -249,6 +265,7 @@ export const usePersonalPageStore = defineStore("globalPageStore", () => {
         fetchActiveCategorySpecifications,
         fetchPopularProducts,
 
+        typesContracts,
         activeCategory,
         popularCategoryItems,
         analogProviders,
