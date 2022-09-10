@@ -19,18 +19,23 @@ router.get("/suppliers/popularProducts", suppliers.getPopularProducts);
 //топ поставщиков по выбранной категории
 router.get("/suppliers/popularsuppliers", suppliers.getPopularSuppliers);
 
+//топ поставщиков по выбранной категории
+router.get("/suppliers/associatedCte", suppliers.getAssociatedCte);
 
 
-//по динамике количества по определенной категории 
+//по динамике количества по категориям продавца
 router.get("/personal/dynamics", personal.getDynamics);
 
-//по проданным товарам ,разделенным по характеристикам
+//???????????????????????????????????по проданным товарам ,разделенным по характеристикам
 router.get("/personal/contractsSpecifications", personal.getContractsSpecifications);
 
-//популярных за месяц 5 товаров у поставщиков по всей платформе
+//популярных за месяц 5 товаров у поставщика
 router.get("/personal/popularProducts", personal.getPopularProducts);
 
-//популярных за месяц 5 товаров у поставщиков по всей платформе
+//пкатегории поставщика с его продажами
 router.get("/personal/category", personal.getCategories);
+
+//распределение типов закупок
+router.get("/personal/getTypesContracts",personal.getTypesContracts);
 
 module.exports = router;
