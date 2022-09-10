@@ -176,6 +176,7 @@ export const useGlobalPageStore = defineStore("globalPageStore", () => {
         activePeriod,
         relativeCategories,
         activeCategory,
+        colorSpecificationsItems,
         quantityDynamicsChartData,
         colorSpecificationsItemsChartData,
         popularSuppliersItems,

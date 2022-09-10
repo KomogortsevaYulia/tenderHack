@@ -19,6 +19,7 @@ function updateChart() {
         chart = echarts.init(dynamicLinearChartRef.value);
     }
     chart.setOption(props.chartData, true);
+    chart.resize();
 }
 
 const style = computed(() => {
