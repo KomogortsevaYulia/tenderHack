@@ -10,10 +10,23 @@ export const useGlobalPageStore = defineStore("globalPageStore", () => {
     const activeCategory = ref(null);
     const quantityDynamicItems = ref([])
     const colorSpecificationsItems = ref([])
+    const popularSuppliersItems = ref([])
     const dbeg = ref(add(new Date(), {
         years: -3
     }))
     const dend = ref(new Date())
+
+    async function fetchPopularSuppliers() {
+         let params = {
+            'category': activeCategory.value,
+            'firstDay': format(dbeg.value, 'dd.MM.yy'),
+            'lastDay': format(dend.value, 'dd.MM.yy'),
+        }
+        let r = await axios.get('/api/suppliers/popularsuppliers', {
+            params
+        })
+        popularSuppliersItems.value = r.data;
+    }
 
     async function fetchActiveCategorySpecifications() {
         let params = {
@@ -22,7 +35,6 @@ export const useGlobalPageStore = defineStore("globalPageStore", () => {
             'lastDay': format(dend.value, 'dd.MM.yy'),
             'name': 'Цвет'
         }
-        console.log(params)
         let r = await axios.get('/api/suppliers/contractsSpecifications', {
             params
         })
@@ -46,8 +58,11 @@ export const useGlobalPageStore = defineStore("globalPageStore", () => {
     }
 
     watch(activeCategory, async () => {
-        await fetchActiveCategoryQuantityDynamic()
-        await fetchActiveCategorySpecifications();
+        await Promise.all([
+            fetchActiveCategoryQuantityDynamic(),
+            fetchActiveCategorySpecifications(),
+            fetchPopularSuppliers()
+        ])
     })
 
     const colorSpecificationsItemsChartData = computed(() => {
@@ -144,5 +159,6 @@ export const useGlobalPageStore = defineStore("globalPageStore", () => {
         activeCategory,
         quantityDynamicsChartData,
         colorSpecificationsItemsChartData,
+        popularSuppliersItems,
     }
 })

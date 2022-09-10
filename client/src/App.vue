@@ -23,8 +23,7 @@ const {
 
 <template>
     <Header/>
-    <GlobalPage/>
-    <div></div>
+    <router-view></router-view>
 </template>
 
 <style lang="scss">
