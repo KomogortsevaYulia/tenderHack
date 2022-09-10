@@ -26,6 +26,22 @@ const {
 </script>
 
 <template>
+<<<<<<< HEAD
+    <div class="container">
+        <h1>Глобальный рейтинг поставщиков</h1>
+        <ul class="navbar-nav mt-4">
+            <select v-model="activeCategory" class="form-control">
+                <option :value="c.code" v-for="c in categories">{{ c.label }}</option>
+            </select>
+        </ul>
+        <div class="row mt-4">
+            <div class="col-7">
+                <Echart :chart-data="quantityDynamicsChartData"/>
+            </div>
+            <div class="col-5">
+                <Echart :chart-data="colorSpecificationsItemsChartData"/>
+            </div>
+=======
     <h1>Глобальный рейтинг поставщиков</h1>
     <ul class="navbar-nav mt-4">
         <select v-model="activeCategory" class="form-control">
@@ -35,6 +51,7 @@ const {
     <div class="row mt-4">
         <div class="col-8">
             <Echart :chart-data="quantityDynamicsChartData"/>
+>>>>>>> 62785706096ba6b00baa57f3d46f139da27bde31
         </div>
         <div class="col-4">
             <Echart :chart-data="colorSpecificationsItemsChartData"/>
