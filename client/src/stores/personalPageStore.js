@@ -9,7 +9,7 @@ import {useMainStore} from "@/stores/mainStore";
 import {useVocabulariesStore} from "@/stores/vocabulariesStore";
 
 export const usePersonalPageStore = defineStore("globalPageStore", () => {
-    const activeCategory = ref(localStorage.getItem("activeCategory") || "Велосипеды");
+    const activeCategory = ref(localStorage.getItem("personalActiveCategory") || "");
     const personalCategories = ref([]);
     const quantityDynamicItems = ref([])
     const colorSpecificationsItems = ref([])
@@ -92,7 +92,7 @@ export const usePersonalPageStore = defineStore("globalPageStore", () => {
 
     watch(activeCategory, async () => {
         refetchAll()
-        localStorage.activeCategory = activeCategory.value
+        localStorage.personalActiveCategory = activeCategory.value
     })
 
     const colorSpecificationsItemsChartData = computed(() => {
