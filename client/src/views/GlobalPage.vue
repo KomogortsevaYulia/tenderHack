@@ -1,9 +1,9 @@
 <script setup>
 import Charts from '../components/Charts.vue'
 import PopularItems from '../components/Items.vue'
-import {useVocabulariesStore} from "@/stores/vocabulariesStore";
-import {storeToRefs} from "pinia";
-import {useGlobalPageStore} from "@/stores/globalPageStore";
+import { useVocabulariesStore } from "@/stores/vocabulariesStore";
+import { storeToRefs } from "pinia";
+import { useGlobalPageStore } from "@/stores/globalPageStore";
 import Echart from '../components/Charts/Echart.vue'
 import PieChart from '../components/Charts/PieChart.vue'
 
@@ -16,6 +16,7 @@ const {
     colorSpecificationsItemsChartData,
     popularSuppliersItems,
     popularProductsItems,
+    activePeriod,
     relativeCategories,
 } = storeToRefs(globalPageStore)
 
@@ -29,23 +30,30 @@ const {
 <template>
 
     <h1>Глобальный рейтинг поставщиков</h1>
-    <ul class="navbar-nav mt-4">
+    <div class="d-flex mt-4">
         <select v-model="activeCategory" class="form-control">
             <option :value="c.code" v-for="c in categories">{{ c.label }}</option>
         </select>
-    </ul>
+        <div class="btn-group ms-3" role="group" aria-label="Basic example">
+            <button type="button" class="btn btn-light" @click="activePeriod=7">1Н</button>
+            <button type="button" class="btn btn-light" @click="activePeriod=30">1М</button>
+            <button type="button" class="btn btn-light" @click="activePeriod=90">3М</button>
+            <button type="button" class="btn btn-light" @click="activePeriod=180">6М</button>
+            <button type="button" class="btn btn-light" @click="activePeriod=365">1Г</button>
+        </div>
+    </div>
     <div class="row mt-4">
         <div class="col-lg-7 pe-lg-5 col-12 pt-2 ps-0">
-            <Echart :chart-data="quantityDynamicsChartData"/>
+            <Echart :chart-data="quantityDynamicsChartData" />
         </div>
         <div class="col-lg-5 border rounded col-12 pt-2">
-            <Echart :chart-data="colorSpecificationsItemsChartData"/>
+            <Echart :chart-data="colorSpecificationsItemsChartData" />
         </div>
     </div>
 
     <div class="row mt-4 ">
         <div class="alert alert-primary col" role="alert">
-            
+
             {{activeCategory}} продаются так же с:<br>
             <span v-for="i in relativeCategories">
                 {{i.percent}}% - {{i.category}} <br>

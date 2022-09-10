@@ -10,15 +10,25 @@ import {useVocabulariesStore} from "@/stores/vocabulariesStore";
 
 export const useGlobalPageStore = defineStore("globalPageStore", () => {
     const activeCategory = ref(localStorage.getItem("activeCategory") || "Велосипеды");
+    const activePeriod = ref(parseInt( localStorage.getItem("activePeriod") || "7"));
     const quantityDynamicItems = ref([])
     const colorSpecificationsItems = ref([])
     const popularSuppliersItems = ref([])
     const popularProductsItems = ref([])
     const relativeCategories = ref([])
-    const dbeg = ref(add(new Date(), {
-        years: -3
-    }))
-    const dend = ref(new Date())
+    // const dbeg = ref(add(new Date(), {
+    //     years: -3
+    // }))
+    const dend = ref (add(new Date(), {
+        years: -2
+    }));
+    const dbeg=computed(()=>{
+        return add(new Date(), {
+                days: -activePeriod.value,
+                years: -2
+            
+            })
+    })
 
     const vocabulariesStore = useVocabulariesStore();
     const {
@@ -108,6 +118,10 @@ export const useGlobalPageStore = defineStore("globalPageStore", () => {
         refetchAll()
         localStorage.activeCategory = activeCategory.value
     })
+
+    watch(activePeriod, async () => {
+        refetchAll();
+    });
 
     const colorSpecificationsItemsChartData = computed(() => {
 
@@ -263,6 +277,7 @@ export const useGlobalPageStore = defineStore("globalPageStore", () => {
         fetchActiveCategorySpecifications,
         fetchPopularProducts,
 
+        activePeriod,
         relativeCategories,
         activeCategory,
         quantityDynamicsChartData,
