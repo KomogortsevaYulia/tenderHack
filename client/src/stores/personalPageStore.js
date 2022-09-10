@@ -1,13 +1,12 @@
 import {defineStore, storeToRefs} from "pinia";
-import {computed, ref, watch} from "vue";
+import {computed, onBeforeMount, ref, watch} from "vue";
 import axios from "axios";
 import _ from 'lodash'
 import * as echarts from "echarts";
 import {format, formatDistance, formatRelative, subDays} from 'date-fns'
-import {add} from "date-fns";
-import {useMainStore} from "@/stores/mainStore";
 import {useVocabulariesStore} from "@/stores/vocabulariesStore";
 import {usePeriod} from "@/stores/usePeriod";
+import {onBeforeRouteUpdate, useRouter} from "vue-router";
 
 export const usePersonalPageStore = defineStore("globalPageStore", () => {
     const activeCategory = ref(localStorage.getItem("activeCategory") || "Велосипеды");
@@ -20,6 +19,13 @@ export const usePersonalPageStore = defineStore("globalPageStore", () => {
     const popularCategoryItems = ref([])
     const analogProviders = ref([])
 
+    const loadingAnalogProviders = ref(false);
+    const loadingPopularSuppliers = ref(false);
+    const loadingPopularProducts = ref(false);
+    const loadingPopularCategory = ref(false);
+    const loadingActiveCategorySpecifications = ref(false);
+    const loadingActiveCategoryQuantityDynamic = ref(false);
+
     const {
         activePeriod,
         dend,
@@ -31,15 +37,16 @@ export const usePersonalPageStore = defineStore("globalPageStore", () => {
         categories
     } = storeToRefs(vocabulariesStore)
 
-
     async function fetchAnalogProviders() {
          let params = {
             // 'firstDay': format(dbeg.value, 'dd.MM.yy'),
             // 'lastDay': format(dend.value, 'dd.MM.yy'),
         }
+        loadingAnalogProviders.value = true;
         let r = await axios.get('/api/personal/getAnalogProviders', {
             params
         })
+        loadingAnalogProviders.value = false;
         analogProviders.value = r.data;
     }
 
@@ -49,9 +56,11 @@ export const usePersonalPageStore = defineStore("globalPageStore", () => {
             'firstDay': format(dbeg.value, 'dd.MM.yy'),
             'lastDay': format(dend.value, 'dd.MM.yy'),
         }
+        loadingPopularSuppliers.value = true;
         let r = await axios.get('/api/personal/popularsuppliers', {
             params
         })
+        loadingPopularSuppliers.value = false;
         popularSuppliersItems.value = r.data;
     }
 
@@ -61,14 +70,18 @@ export const usePersonalPageStore = defineStore("globalPageStore", () => {
             'firstDay': format(dbeg.value, 'dd.MM.yy'),
             'lastDay': format(dend.value, 'dd.MM.yy'),
         }
+        loadingPopularProducts.value = true;
         let r = await axios.get('/api/personal/popularProducts', {
             params
         })
+        loadingPopularProducts.value = false;
         popularProductsItems.value = r.data;
     }
 
     async function fetchPopularCategory() {
+        loadingPopularCategory.value = true;
         let r = await axios.get('/api/personal/getAssociatedCte')
+        loadingPopularCategory.value = false;
         popularCategoryItems.value = r.data;
     }
 
@@ -79,19 +92,23 @@ export const usePersonalPageStore = defineStore("globalPageStore", () => {
             'lastDay': format(dend.value, 'dd.MM.yy'),
             'name': 'Цвет'
         }
+        loadingActiveCategorySpecifications.value = true;
         let r = await axios.get('/api/personal/contractsSpecifications', {
             params
         })
+        loadingActiveCategorySpecifications.value = false;
         colorSpecificationsItems.value = r.data;
     }
 
     async function fetchActiveCategoryQuantityDynamic() {
+        loadingActiveCategoryQuantityDynamic.value = true;
         let r = await axios.get("/api/personal/dynamics", {
             params: {
                 'firstDay': format(dbeg.value, 'dd.MM.yy'),
                 'lastDay': format(dend.value, 'dd.MM.yy'),
             }
         })
+        loadingActiveCategoryQuantityDynamic.value = false;
         quantityDynamicItems.value = _(r.data).map(x => {
             return {
                 date: new Date(x.date),
@@ -264,6 +281,7 @@ export const usePersonalPageStore = defineStore("globalPageStore", () => {
         fetchActiveCategoryQuantityDynamic,
         fetchActiveCategorySpecifications,
         fetchPopularProducts,
+        refetchAll,
 
         typesContracts,
         activeCategory,
@@ -273,5 +291,12 @@ export const usePersonalPageStore = defineStore("globalPageStore", () => {
         colorSpecificationsItemsChartData,
         popularSuppliersItems,
         popularProductsItems,
+
+        loadingAnalogProviders,
+        loadingPopularSuppliers,
+        loadingPopularProducts,
+        loadingPopularCategory,
+        loadingActiveCategorySpecifications,
+        loadingActiveCategoryQuantityDynamic,
     }
 })

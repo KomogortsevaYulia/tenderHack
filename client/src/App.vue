@@ -6,6 +6,9 @@ import GlobalPage from "@/views/GlobalPage.vue";
 import {useVocabulariesStore} from "@/stores/vocabulariesStore";
 import {storeToRefs} from "pinia";
 import './assets/main.css'
+import {useRouter} from "vue-router";
+import {useGlobalPageStore} from "@/stores/globalPageStore";
+import {usePersonalPageStore} from "@/stores/personalPageStore";
 
 const mainStore = useMainStore();
 
@@ -19,7 +22,17 @@ const {
     categories
 } = storeToRefs(vocabulariesStore)
 
-
+const router = useRouter();
+router.afterEach(async x => {
+    console.log(x.path);
+    if (x.path === '/personal') {
+        const personalPageStore = usePersonalPageStore();
+        await personalPageStore.refetchAll()
+    } else if (x.path === '/') {
+        const globalPageStore = useGlobalPageStore();
+        await globalPageStore.refetchAll();
+    }
+})
 </script>
 
 <template>
