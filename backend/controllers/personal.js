@@ -69,5 +69,28 @@ class Personal {
    
     return res.json(list);
   }
+  async getCategories(req, res) {
+
+    if (!req.body) return response.sendStatus(400);
+  
+    const list = await sequelize.query(
+        `		   
+        select cte.category,count(*)
+        from cte 
+        join contract_to_cte c on c.cte_id=cte.id
+        join contracts b on contract_id=b.id
+        where b.contract_date > ? and b.contract_date < ? and b.provider_title = ?
+        group by cte.category
+        order by 2 desc`,
+      {
+        replacements: [req.query.firstDay,req.query.lastDay,PROVIDER_TITLE],
+        type: Sequelize.QueryTypes.SELECT,
+      } 
+    );
+
+   
+    return res.json(list);
+  }
+
 }
 module.exports = new Personal();

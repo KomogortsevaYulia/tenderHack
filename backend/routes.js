@@ -20,6 +20,7 @@ router.get("/suppliers/popularProducts", suppliers.getPopularProducts);
 router.get("/suppliers/popularsuppliers", suppliers.getPopularSuppliers);
 
 
+
 //по динамике количества по определенной категории 
 router.get("/personal/dynamics", personal.getDynamics);
 
@@ -28,5 +29,8 @@ router.get("/personal/contractsSpecifications", personal.getContractsSpecificati
 
 //популярных за месяц 5 товаров у поставщиков по всей платформе
 router.get("/personal/popularProducts", personal.getPopularProducts);
+
+//популярных за месяц 5 товаров у поставщиков по всей платформе
+router.get("/personal/category", personal.getCategories);
 
 module.exports = router;
