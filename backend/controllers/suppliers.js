@@ -71,6 +71,32 @@ class Suppliers {
     return res.json(list);
   }
 
+
+  async getPopularCategory(req, res) {
+
+    if (!req.body) return response.sendStatus(400);
+  
+    const list = await sequelize.query(
+        `		    
+ select cte.category , count(*)
+ from cte
+ join contract_to_cte c on c.cte_id=cte.id
+ join contracts b on contract_id=b.id
+ where b.contract_date > ? and b.contract_date < ?
+ group by cte.category 
+ order by 2 desc
+ limit 5
+ `,
+      {
+        replacements: [req.query.firstDay,req.query.lastDay],
+        type: Sequelize.QueryTypes.SELECT,
+      } 
+    );
+
+   
+    return res.json(list);
+  }
+
   async getPopularSuppliers(req, res) {
 
     if (!req.body) return response.sendStatus(400);

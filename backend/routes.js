@@ -19,8 +19,11 @@ router.get("/suppliers/popularProducts", suppliers.getPopularProducts);
 //топ поставщиков по выбранной категории
 router.get("/suppliers/popularsuppliers", suppliers.getPopularSuppliers);
 
-//топ поставщиков по выбранной категории
+// сопутсвующие товары
 router.get("/suppliers/associatedCte", suppliers.getAssociatedCte);
+
+// востребованные категории
+router.get("/suppliers/popularCategory", suppliers.getPopularCategory);
 
 
 
