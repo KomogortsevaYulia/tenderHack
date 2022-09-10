@@ -47,6 +47,9 @@ const {
 <!--        <div class="badge bg-gradient1">Закупок: {{ item.count }}</div>-->
 <!--    </PopularItems>-->
 
+    <div>Похожие поставщики</div>
+    <div>Выводим заказчиков этих постовщиков которые покапают наши товары</div>
+
     <PopularItems class="mt-4" title="Топ закупок" :items="popularProductsItems" v-slot="{item}">
         <div class="d-flex flex-column justify-content-center align-items-center h-100">
             <div class="flex-grow-1 d-flex pb-2 fw-bold align-items-center text-center">{{ item.title }}</div>
