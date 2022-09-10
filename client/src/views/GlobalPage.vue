@@ -33,10 +33,10 @@ const {
             </select>
         </ul>
         <div class="row mt-4">
-            <div class="col-8">
+            <div class="col-7">
                 <Echart :chart-data="quantityDynamicsChartData"/>
             </div>
-            <div class="col-4">
+            <div class="col-5">
                 <Echart :chart-data="colorSpecificationsItemsChartData"/>
             </div>
         </div>

@@ -15,7 +15,7 @@ function updateChart() {
     if (chart == null) {
         chart = echarts.init(dynamicLinearChartRef.value);
     }
-    chart.setOption(props.chartData);
+    chart.setOption(props.chartData, true);
 }
 
 watch(() => props.chartData, () => {

@@ -66,19 +66,36 @@ export const useGlobalPageStore = defineStore("globalPageStore", () => {
     })
 
     const colorSpecificationsItemsChartData = computed(() => {
+        // let options={};
+        // if (colorSpecificationsItems.value.length<7){
+        //     options={
+        //         legend: {
+        //         orient: 'vertical',
+        //         left: 'left'
+        //       }
+        //     }
+        // }
+
+        // console.log(options)
+
         return {
+            legend: {
+                type: 'scroll',
+                orient: 'vertical',
+                left: 0,
+                top: 20,
+                bottom: 20,
+              },
             tooltip: {
                 trigger: 'item'
+                
             },
-            legend: {
-                top: '5%',
-                left: 'center'
-            },
+            // ...options,
             series: [
                 {
                     name: 'Access From',
                     type: 'pie',
-                    radius: ['40%', '70%'],
+                    radius: ['30%', '70%'],
                     avoidLabelOverlap: false,
                     label: {
                         show: false,
@@ -96,7 +113,8 @@ export const useGlobalPageStore = defineStore("globalPageStore", () => {
                     },
                     data: colorSpecificationsItems.value.map(x => {
                         return {value: x.count, name: x.value}
-                    })
+                    }),
+                    center: ["70%", "50%"]
                 }
             ]
         }
@@ -104,6 +122,37 @@ export const useGlobalPageStore = defineStore("globalPageStore", () => {
 
     const quantityDynamicsChartData = computed(() => {
         return {
+            toolbox: {
+                right: 10,
+                feature: {
+                  dataZoom: {
+                    yAxisIndex: 'none'
+                  },
+                  saveAsImage: {}
+                }
+              },
+              dataZoom: [
+                {
+                  type: 'slider',
+                  xAxisIndex: 0,
+                  filterMode: 'none'
+                },
+                {
+                  type: 'slider',
+                  yAxisIndex: 0,
+                  filterMode: 'none'
+                },
+                {
+                  type: 'inside',
+                  xAxisIndex: 0,
+                  filterMode: 'none'
+                },
+                {
+                  type: 'inside',
+                  yAxisIndex: 0,
+                  filterMode: 'none'
+                }
+              ],
             xAxis: {
                 type: 'category',
                 data: quantityDynamicItems.value.map(x => format(x.date, 'dd.MM.yy'))
