@@ -29,6 +29,22 @@ const {
 <template>
 
     <h1>Глобальный рейтинг поставщиков</h1>
+
+    <PopularItems class="mt-4" title="Востребованные категории" :items="popularProductsItems" v-slot="{item}">
+        <div class="d-flex flex-column justify-content-center align-items-center h-100">
+            <div class="flex-grow-1 d-flex pb-2 fw-bold align-items-center text-center">Товары категеории {{ item.title }}</div>
+            <div class="badge bg-gradient1 align-self-stretch">Закупок: {{ item.count }}</div>
+        </div>
+    </PopularItems>
+
+    <PopularItems class="mt-4" title="Популярное в этом периоде" :items="popularProductsItems" v-slot="{item}">
+        <div class="d-flex flex-column justify-content-center align-items-center h-100">
+            <div class="flex-grow-1 d-flex pb-2 fw-bold align-items-center text-center">{{ item.title }}</div>
+            <div class="badge bg-gradient1 align-self-stretch">Закупок: {{ item.count }}</div>
+        </div>
+    </PopularItems>
+
+
     <ul class="navbar-nav mt-4">
         <select v-model="activeCategory" class="form-control">
             <option :value="c.code" v-for="c in categories">{{ c.label }}</option>
@@ -58,13 +74,6 @@ const {
         <div class="badge bg-primary me-2">ИНН: {{ item.provider_inn }}</div>
         <div class="badge bg-primary me-2">КПП: {{ item.provider_kpp }}</div>
         <div class="badge bg-gradient1">Закупок: {{ item.count }}</div>
-    </PopularItems>
-
-    <PopularItems class="mt-4" title="Популярное в этом месяце" :items="popularProductsItems" v-slot="{item}">
-        <div class="d-flex flex-column justify-content-center align-items-center h-100">
-            <div class="flex-grow-1 d-flex pb-2 fw-bold align-items-center text-center">{{ item.title }}</div>
-            <div class="badge bg-gradient1 align-self-stretch">Закупок: {{ item.count }}</div>
-        </div>
     </PopularItems>
 
     <div class="mb-4"></div>
