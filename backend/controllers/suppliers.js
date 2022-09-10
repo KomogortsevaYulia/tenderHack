@@ -95,6 +95,33 @@ class Suppliers {
     return res.json(list);
   }
   
+  async getAssociatedCte (req, res) {
+
+    if (!req.body) return response.sendStatus(400);
+  
+    const list = await sequelize.query(
+        `	WITH tbl as (SELECT category, count(*) as count
+        FROM (SELECT DISTINCT cte.category as category, contract_id
+              FROM contract_to_cte
+                       JOIN cte ON cte.id = contract_to_cte.cte_id
+              WHERE contract_id in (SELECT contract_id
+                                    FROM contract_to_cte
+                                    WHERE contract_to_cte.cte_id in (SELECT id
+                                                                     FROM cte
+                                                                     WHERE category = ?))) t
+        GROUP BY category)
+SELECT category, 1.0 * tbl.count / (SELECT max(count) FROM tbl)
+FROM tbl
+ORDER BY 2 DESC `,
+      {
+        replacements: [req.query.category],
+        type: Sequelize.QueryTypes.SELECT,
+      } 
+    );
+
+   
+    return res.json(list);
+  }
   
 }
 module.exports = new Suppliers();

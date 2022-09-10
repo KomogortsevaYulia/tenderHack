@@ -19,6 +19,8 @@ router.get("/suppliers/popularProducts", suppliers.getPopularProducts);
 //топ поставщиков по выбранной категории
 router.get("/suppliers/popularsuppliers", suppliers.getPopularSuppliers);
 
+//топ поставщиков по выбранной категории
+router.get("/suppliers/associatedCte", suppliers.getAssociatedCte);
 
 
 //по динамике количества по категориям продавца
