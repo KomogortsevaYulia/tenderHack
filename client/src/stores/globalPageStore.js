@@ -1,13 +1,15 @@
-import {defineStore} from "pinia";
+import {defineStore, storeToRefs} from "pinia";
 import {computed, ref, watch} from "vue";
 import axios from "axios";
 import _ from 'lodash'
 import * as echarts from "echarts";
 import {format, formatDistance, formatRelative, subDays} from 'date-fns'
 import {add} from "date-fns";
+import {useMainStore} from "@/stores/mainStore";
+import {useVocabulariesStore} from "@/stores/vocabulariesStore";
 
 export const useGlobalPageStore = defineStore("globalPageStore", () => {
-    const activeCategory = ref(null);
+    const activeCategory = ref(localStorage.getItem("activeCategory") || "Велосипеды");
     const quantityDynamicItems = ref([])
     const colorSpecificationsItems = ref([])
     const popularSuppliersItems = ref([])
@@ -17,8 +19,13 @@ export const useGlobalPageStore = defineStore("globalPageStore", () => {
     }))
     const dend = ref(new Date())
 
+    const vocabulariesStore = useVocabulariesStore();
+    const {
+        categories
+    } = storeToRefs(vocabulariesStore)
+
     async function fetchPopularSuppliers() {
-         let params = {
+        let params = {
             'category': activeCategory.value,
             'firstDay': format(dbeg.value, 'dd.MM.yy'),
             'lastDay': format(dend.value, 'dd.MM.yy'),
@@ -30,7 +37,7 @@ export const useGlobalPageStore = defineStore("globalPageStore", () => {
     }
 
     async function fetchPopularProducts() {
-         let params = {
+        let params = {
             'category': activeCategory.value,
             'firstDay': format(dbeg.value, 'dd.MM.yy'),
             'lastDay': format(dend.value, 'dd.MM.yy'),
@@ -70,13 +77,22 @@ export const useGlobalPageStore = defineStore("globalPageStore", () => {
         }).sortBy(x => x.date).value();
     }
 
-    watch(activeCategory, async () => {
+    async function refetchAll() {
         await Promise.all([
-            fetchActiveCategoryQuantityDynamic(),
             fetchActiveCategorySpecifications(),
+            fetchActiveCategoryQuantityDynamic(),
             fetchPopularSuppliers(),
             fetchPopularProducts(),
         ])
+    }
+
+    watch(categories, async () => {
+        refetchAll();
+    });
+
+    watch(activeCategory, async () => {
+        refetchAll()
+        localStorage.activeCategory = activeCategory
     })
 
     const colorSpecificationsItemsChartData = computed(() => {
