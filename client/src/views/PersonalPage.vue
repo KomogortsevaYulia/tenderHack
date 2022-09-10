@@ -24,12 +24,7 @@ const {
 </script>
 
 <template>
-
-    <ul class="navbar-nav mt-4">
-        <select v-model="activeCategory" class="form-control">
-            <option :value="c.code" v-for="c in categories">{{ c.label }}</option>
-        </select>
-    </ul>
+    <h1>ООО "Жизнь офиса"</h1>
     <div class="row mt-4">
         <div class="col-12">
             <Echart :chart-data="quantityDynamicsChartData"/>
