@@ -42,4 +42,7 @@ router.get("/personal/category", personal.getCategories);
 //распределение типов закупок
 router.get("/personal/getTypesContracts",personal.getTypesContracts);
 
+//сопутсвующие товары данного поставщика
+router.get("/personal/getAssociatedCte",personal.getAssociatedCte);
+
 module.exports = router;

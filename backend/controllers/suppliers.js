@@ -149,5 +149,7 @@ ORDER BY 2 DESC limit 3 offset 1`,
     return res.json(list);
   }
   
+  
+
 }
 module.exports = new Suppliers();

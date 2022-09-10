@@ -82,7 +82,7 @@ async getDynamics(req, res) {
         join contracts b on contract_id=b.id
         where b.contract_date > ? and b.contract_date < ? and b.provider_title = ?
         group by cte.category
-        order by 2 desc`,
+        order by 2 desc limit 5`,
       {
         replacements: [req.query.firstDay,req.query.lastDay,PROVIDER_TITLE],
         type: Sequelize.QueryTypes.SELECT,
@@ -120,6 +120,50 @@ async getDynamics(req, res) {
 
    
     return res.json(list);
+  }
+
+  async getAssociatedCte (req, res) {
+
+    if (!req.body) return response.sendStatus(400);
+  
+    const category= await sequelize.query(
+      ` select cte.category,count(*)
+        from cte 
+        join contract_to_cte c on c.cte_id=cte.id
+        join contracts b on contract_id=b.id
+        where b.provider_title = ?
+        group by cte.category
+        order by 2 desc limit 5`,
+      {
+        replacements: [PROVIDER_TITLE],
+        type: Sequelize.QueryTypes.SELECT,
+      } 
+    );
+    
+    let data=await Promise.all(category.map(async x => {
+        let query = await sequelize.query(`	WITH tbl as (SELECT category, count(*) as count
+        FROM (SELECT DISTINCT cte.category as category, contract_id
+              FROM contract_to_cte
+                       JOIN cte ON cte.id = contract_to_cte.cte_id
+              WHERE contract_id in (SELECT contract_id
+                                    FROM contract_to_cte
+                                    WHERE contract_to_cte.cte_id in (SELECT id
+                                                                     FROM cte
+                                                                     WHERE category = ?))) t
+        GROUP BY category)
+        SELECT category, cast (100.0 * tbl.count / (SELECT max(count) FROM tbl) as INT) as percent
+        FROM tbl
+        ORDER BY 2 DESC limit 3 offset 1`, {
+          replacements: [x.category],
+          type: Sequelize.QueryTypes.SELECT,
+        } )
+        return {
+            'title': x.title,
+            'items': query
+        }
+    }))
+
+    return res.json(data);
   }
 }
 module.exports = new Personal();
