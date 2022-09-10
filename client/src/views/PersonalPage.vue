@@ -74,13 +74,9 @@ const {
             @click="clientClick(item.provider_title)">
             <div class="flex-grow-1 d-flex pb-2 fw-bold align-items-center text-center">{{ item.provider_title }}</div>
             <div class="badge bg-gradient1 align-self-stretch mb-1">Закупок: {{ item.count }}</div>
-            <div class="badge bg-gradient1 align-self-stretch">Объем закупок: {{ item.sum }}₽</div>
+            <div class="badge bg-gradient1 align-self-stretch">Объем закупок: {{ item.sum.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g," ") }}₽</div>
         </div>
     </PopularItems>
-
-    <div>Похожие поставщики</div>
-    <div>Выводим заказчиков этих постовщиков которые покапают наши товары</div>
-    <div>Сопотсвтующие категории</div>
 
     <div class="row mt-4 ">
         <div class="alert alert-primary col" role="alert">
