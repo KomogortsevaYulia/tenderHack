@@ -126,12 +126,7 @@ export const usePersonalPageStore = defineStore("personalPageStore", () => {
                 'lastDay': format(dend.value, 'dd.MM.yy'),
             }
         })
-        typesContracts.value = _(r.data).map(x => {
-            return {
-                date: new Date(x.date),
-                count: x.count
-            }
-        }).sortBy(x => x.date).value();
+        typesContracts.value = r.data
     }
 
     async function refetchAll() {

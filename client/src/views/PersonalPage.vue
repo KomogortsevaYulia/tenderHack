@@ -78,7 +78,7 @@ const {
         </div>
     </div>
 
-    <PopularItems class="mt-4" title="Топ категорий" :items="popularCategoryItems" v-slot="{item}">
+    <PopularItems class="mt-4" title="Ваши категории" :items="popularCategoryItems" v-slot="{item}">
         <div class="d-flex flex-column justify-content-center align-items-center h-100">
             <div class="flex-grow-1 d-flex pb-2 fw-bold align-items-center text-center">{{ item.category }}</div>
             <div class="badge bg-gradient1 align-self-stretch">Закупок: {{ item.count }}</div>
@@ -92,7 +92,7 @@ const {
         </div>
     </PopularItems>
 
-    <PopularItems class="mt-4" title="Топ закупок" :items="popularProductsItems" :loading="loadingPopularProducts" v-slot="{item}">
+    <PopularItems class="mt-4" title="Ваши закупки" :items="popularProductsItems" :loading="loadingPopularProducts" v-slot="{item}">
         <div class="d-flex flex-column justify-content-center align-items-center h-100">
             <div class="flex-grow-1 d-flex pb-2 fw-bold align-items-center text-center">{{ item.title }}</div>
             <div class="badge bg-gradient1 align-self-stretch">Закупок: {{ item.count }}</div>
