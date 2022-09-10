@@ -131,7 +131,7 @@ export const useGlobalPageStore = defineStore("globalPageStore", () => {
         }).sortBy(x => x.date).value();
     }
 
-    async function refetchAll() {
+    const refetchAll = _.debounce(async () => {
         await Promise.all([
             fetchActiveCategorySpecifications(),
             fetchActiveCategoryQuantityDynamic(),
@@ -140,10 +140,10 @@ export const useGlobalPageStore = defineStore("globalPageStore", () => {
             fetchPopularCategory(),
             fetchActiveCategoryRelativeCategories(),
         ])
-    }
+    }, 500)
 
     watch(categories, async () => {
-        refetchAll();
+        // refetchAll();
     });
 
     watch(activeCategory, async () => {
