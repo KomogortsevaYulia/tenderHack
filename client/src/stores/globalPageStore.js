@@ -128,6 +128,7 @@ export const useGlobalPageStore = defineStore("globalPageStore", () => {
 
     watch(activePeriod, async () => {
         refetchAll();
+        localStorage.activePeriod = activePeriod.value
     });
 
     const colorSpecificationsItemsChartData = computed(() => {

@@ -45,4 +45,7 @@ router.get("/personal/getTypesContracts",personal.getTypesContracts);
 // похожие провайдеры
 router.get("/personal/getAnalogProviders",personal.getAnalogProviders);
 
+//сопутсвующие товары данного поставщика
+router.get("/personal/getAssociatedCte",personal.getAssociatedCte);
+
 module.exports = router;
