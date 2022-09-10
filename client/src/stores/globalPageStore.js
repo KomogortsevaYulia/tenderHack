@@ -1,23 +1,31 @@
-import {defineStore} from "pinia";
+import {defineStore, storeToRefs} from "pinia";
 import {computed, ref, watch} from "vue";
 import axios from "axios";
 import _ from 'lodash'
 import * as echarts from "echarts";
 import {format, formatDistance, formatRelative, subDays} from 'date-fns'
 import {add} from "date-fns";
+import {useMainStore} from "@/stores/mainStore";
+import {useVocabulariesStore} from "@/stores/vocabulariesStore";
 
 export const useGlobalPageStore = defineStore("globalPageStore", () => {
-    const activeCategory = ref(null);
+    const activeCategory = ref(localStorage.getItem("activeCategory") || "Велосипеды");
     const quantityDynamicItems = ref([])
     const colorSpecificationsItems = ref([])
     const popularSuppliersItems = ref([])
+    const popularProductsItems = ref([])
     const dbeg = ref(add(new Date(), {
         years: -3
     }))
     const dend = ref(new Date())
 
+    const vocabulariesStore = useVocabulariesStore();
+    const {
+        categories
+    } = storeToRefs(vocabulariesStore)
+
     async function fetchPopularSuppliers() {
-         let params = {
+        let params = {
             'category': activeCategory.value,
             'firstDay': format(dbeg.value, 'dd.MM.yy'),
             'lastDay': format(dend.value, 'dd.MM.yy'),
@@ -26,6 +34,18 @@ export const useGlobalPageStore = defineStore("globalPageStore", () => {
             params
         })
         popularSuppliersItems.value = r.data;
+    }
+
+    async function fetchPopularProducts() {
+        let params = {
+            'category': activeCategory.value,
+            'firstDay': format(dbeg.value, 'dd.MM.yy'),
+            'lastDay': format(dend.value, 'dd.MM.yy'),
+        }
+        let r = await axios.get('/api/suppliers/popularProducts', {
+            params
+        })
+        popularProductsItems.value = r.data;
     }
 
     async function fetchActiveCategorySpecifications() {
@@ -57,12 +77,22 @@ export const useGlobalPageStore = defineStore("globalPageStore", () => {
         }).sortBy(x => x.date).value();
     }
 
-    watch(activeCategory, async () => {
+    async function refetchAll() {
         await Promise.all([
-            fetchActiveCategoryQuantityDynamic(),
             fetchActiveCategorySpecifications(),
-            fetchPopularSuppliers()
+            fetchActiveCategoryQuantityDynamic(),
+            fetchPopularSuppliers(),
+            fetchPopularProducts(),
         ])
+    }
+
+    watch(categories, async () => {
+        refetchAll();
+    });
+
+    watch(activeCategory, async () => {
+        refetchAll()
+        localStorage.activeCategory = activeCategory
     })
 
     const colorSpecificationsItemsChartData = computed(() => {
@@ -204,10 +234,12 @@ export const useGlobalPageStore = defineStore("globalPageStore", () => {
     return {
         fetchActiveCategoryQuantityDynamic,
         fetchActiveCategorySpecifications,
+        fetchPopularProducts,
 
         activeCategory,
         quantityDynamicsChartData,
         colorSpecificationsItemsChartData,
         popularSuppliersItems,
+        popularProductsItems,
     }
 })

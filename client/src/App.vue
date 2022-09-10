@@ -5,6 +5,7 @@ import {onBeforeMount} from "vue";
 import GlobalPage from "@/views/GlobalPage.vue";
 import {useVocabulariesStore} from "@/stores/vocabulariesStore";
 import {storeToRefs} from "pinia";
+import './assets/main.css'
 
 const mainStore = useMainStore();
 
@@ -23,7 +24,9 @@ const {
 
 <template>
     <Header/>
+    <div class="mt-4 container">
     <router-view></router-view>
+    </div>
 </template>
 
 <style lang="scss">
