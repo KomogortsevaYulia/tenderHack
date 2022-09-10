@@ -5,7 +5,7 @@ import {storeToRefs} from "pinia";
 </script>
 
 <template>
-    <nav class="navbar navbar-expand-lg bg-light">
+    <nav class="navbar navbar-dark bg-primary navbar-expand-lg">
         <div class="container">
             <a class="navbar-brand" href="#">Поставщики</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
@@ -15,12 +15,12 @@ import {storeToRefs} from "pinia";
             <div class="collapse navbar-collapse" id="navbarNavDropdown">
                 <ul class="nav nav-pills">
                    <li class="nav-item">
-                    <router-link to="/" class="nav-link ">
+                    <router-link to="/" class="nav-link bg-light">
                         Глобальный
                      </router-link>
                   </li>
                   <li class="nav-item">
-                    <router-link to="/personal"  class="nav-link ">
+                    <router-link to="/personal"  class="nav-link bg-light ms-2">
                         Персональный
                      </router-link>
                   </li>

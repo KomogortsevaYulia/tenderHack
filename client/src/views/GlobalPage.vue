@@ -15,6 +15,7 @@ const {
     quantityDynamicsChartData,
     colorSpecificationsItemsChartData,
     popularSuppliersItems,
+    popularProductsItems,
 } = storeToRefs(globalPageStore)
 
 const {
@@ -40,11 +41,12 @@ const {
                 <Echart :chart-data="colorSpecificationsItemsChartData"/>
             </div>
         </div>
-        <PopularItems class="mt-4 " title="Популярное в этом месяце">
-
+        <PopularItems class="mt-4 " title="Популярное в этом месяце" :items="popularProductsItems" v-slot="{item}">
+            <div>{{item.title}}</div>
+            <div class="badge bg-info">Закупок: {{item.count}}</div>
         </PopularItems>
 
-        <PopularItems title="Топ поставщиков" :items="popularSuppliersItems" v-slot="{item}">
+        <PopularItems class="mb-4" title="Топ поставщиков" :items="popularSuppliersItems" v-slot="{item}">
             <h4>{{item.provider_title}}</h4>
             <div class="badge bg-info  me-2">ИНН: {{item.provider_inn}}</div>
             <div class="badge bg-info  me-2">КПП: {{item.provider_kpp}}</div>
