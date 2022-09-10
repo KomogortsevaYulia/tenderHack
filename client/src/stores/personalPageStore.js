@@ -16,6 +16,7 @@ export const usePersonalPageStore = defineStore("globalPageStore", () => {
     const colorSpecificationsItems = ref([])
     const popularSuppliersItems = ref([])
     const popularProductsItems = ref([])
+    const popularCategoryItems = ref([])
     const analogProviders = ref([])
 
     const {
@@ -53,6 +54,11 @@ export const usePersonalPageStore = defineStore("globalPageStore", () => {
         popularProductsItems.value = r.data;
     }
 
+    async function fetchPopularCategory() {
+        let r = await axios.get('/api/personal/getAssociatedCte')
+        popularCategoryItems.value = r.data;
+    }
+
     async function fetchActiveCategorySpecifications() {
         let params = {
             'category': activeCategory.value,
@@ -84,8 +90,9 @@ export const usePersonalPageStore = defineStore("globalPageStore", () => {
     async function refetchAll() {
         await Promise.all([
             fetchActiveCategorySpecifications(),
+            fetchPopularCategory(),
             fetchActiveCategoryQuantityDynamic(),
-            fetchPopularSuppliers(),
+            // fetchPopularSuppliers(),
             fetchPopularProducts(),
         ])
     }
@@ -100,17 +107,6 @@ export const usePersonalPageStore = defineStore("globalPageStore", () => {
     })
 
     const colorSpecificationsItemsChartData = computed(() => {
-        // let options={};
-        // if (colorSpecificationsItems.value.length<7){
-        //     options={
-        //         legend: {
-        //         orient: 'vertical',
-        //         left: 'left'
-        //       }
-        //     }
-        // }
-
-        // console.log(options)
 
         return {
             legend: {
@@ -241,6 +237,7 @@ export const usePersonalPageStore = defineStore("globalPageStore", () => {
         fetchPopularProducts,
 
         activeCategory,
+        popularCategoryItems,
         quantityDynamicsChartData,
         colorSpecificationsItemsChartData,
         popularSuppliersItems,

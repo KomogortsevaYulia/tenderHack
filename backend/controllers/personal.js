@@ -156,7 +156,7 @@ LIMIT 10`,
     if (!req.body) return response.sendStatus(400);
 
     const category= await sequelize.query(
-      ` select cte.category,count(*)
+      ` select cte.category,count(*) as count
         from cte 
         join contract_to_cte c on c.cte_id=cte.id
         join contracts b on contract_id=b.id
@@ -187,7 +187,8 @@ LIMIT 10`,
           type: Sequelize.QueryTypes.SELECT,
         } )
         return {
-            'title': x.title,
+            'category': x.category,
+            'count': x.count,
             'items': query
         }
     }))

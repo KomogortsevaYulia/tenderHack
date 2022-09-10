@@ -12,6 +12,7 @@ const {
     activeCategory,
     quantityDynamicsChartData,
     colorSpecificationsItemsChartData,
+    popularCategoryItems,
     popularSuppliersItems,
     popularProductsItems,
 } = storeToRefs(globalPageStore)
@@ -49,6 +50,20 @@ const {
     <div>Похожие поставщики</div>
     <div>Выводим заказчиков этих постовщиков которые покапают наши товары</div>
     <div>Сопотсвтующие категории</div>
+
+    <PopularItems class="mt-4" title="Топ категорий" :items="popularCategoryItems" v-slot="{item}">
+        <div class="d-flex flex-column justify-content-center align-items-center h-100">
+            <div class="flex-grow-1 d-flex pb-2 fw-bold align-items-center text-center">{{ item.category }}</div>
+            <div class="badge bg-gradient1 align-self-stretch">Закупок: {{ item.count }}</div>
+            <div class="alert alert-primary col" role="alert">
+
+            {{item.category}} продаются так же с:<br>
+            <span v-for="i in item.items">
+                {{i.percent}}% - {{i.category}} <br>
+            </span>
+            </div>
+        </div>
+    </PopularItems>
 
     <PopularItems class="mt-4" title="Топ закупок" :items="popularProductsItems" v-slot="{item}">
         <div class="d-flex flex-column justify-content-center align-items-center h-100">
