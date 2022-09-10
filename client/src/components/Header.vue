@@ -15,13 +15,13 @@ import {storeToRefs} from "pinia";
             <div class="collapse navbar-collapse" id="navbarNavDropdown">
                 <ul class="nav nav-pills">
                    <li class="nav-item">
-                    <router-link to="/">
-                        <a class="nav-link " aria-current="page" href="#">Глобальный</a>
+                    <router-link to="/" class="nav-link ">
+                        Глобальный
                      </router-link>
                   </li>
                   <li class="nav-item">
-                    <router-link to="/personal">
-                        <a class="nav-link " aria-current="page" href="#">Персональный</a>
+                    <router-link to="/personal"  class="nav-link ">
+                        Персональный
                      </router-link>
                   </li>
                 </ul>
