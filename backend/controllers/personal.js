@@ -121,5 +121,34 @@ async getDynamics(req, res) {
    
     return res.json(list);
   }
+
+    async getAnalogProviders(req, res) {
+      if (!req.body) return response.sendStatus(400);
+
+      const list = await sequelize.query(
+        `	SELECT contracts.provider_title, count(*), sum(ctc.amount)
+FROM contracts
+JOIN contract_to_cte ctc on contracts.id = ctc.contract_id
+WHERE customer_title in (SELECT customer_title
+                       FROM contracts
+                       WHERE provider_title = ?) and provider_title !=  ?
+and ctc.cte_id in (
+    SELECT cte2.cte_id
+    FROM contract_to_cte cte2
+    JOIN contracts c on cte2.contract_id = c.id
+    WHERE c.provider_title = ?
+)
+GROUP BY contracts.provider_title
+ORDER BY 2 DESC
+LIMIT 10`,
+      {
+        replacements: [PROVIDER_TITLE, PROVIDER_TITLE, PROVIDER_TITLE],
+        type: Sequelize.QueryTypes.SELECT,
+      }
+    );
+
+    return res.json(list);
+  }
+
 }
 module.exports = new Personal();

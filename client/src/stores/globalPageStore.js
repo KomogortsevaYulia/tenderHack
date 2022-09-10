@@ -7,28 +7,21 @@ import {format, formatDistance, formatRelative, subDays} from 'date-fns'
 import {add} from "date-fns";
 import {useMainStore} from "@/stores/mainStore";
 import {useVocabulariesStore} from "@/stores/vocabulariesStore";
+import {usePeriod} from "@/stores/usePeriod";
 
 export const useGlobalPageStore = defineStore("globalPageStore", () => {
     const activeCategory = ref(localStorage.getItem("activeCategory") || "Велосипеды");
-    const activePeriod = ref(parseInt( localStorage.getItem("activePeriod") || "7"));
     const quantityDynamicItems = ref([])
     const colorSpecificationsItems = ref([])
     const popularSuppliersItems = ref([])
     const popularProductsItems = ref([])
     const relativeCategories = ref([])
-    // const dbeg = ref(add(new Date(), {
-    //     years: -3
-    // }))
-    const dend = ref (add(new Date(), {
-        years: -2
-    }));
-    const dbeg=computed(()=>{
-        return add(new Date(), {
-                days: -activePeriod.value,
-                years: -2
-            
-            })
-    })
+
+    const {
+        activePeriod,
+        dend,
+        dbeg,
+    } = usePeriod();
 
     const vocabulariesStore = useVocabulariesStore();
     const {

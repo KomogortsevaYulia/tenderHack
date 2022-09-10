@@ -42,4 +42,7 @@ router.get("/personal/category", personal.getCategories);
 //распределение типов закупок
 router.get("/personal/getTypesContracts",personal.getTypesContracts);
 
+// похожие провайдеры
+router.get("/personal/getAnalogProviders",personal.getAnalogProviders);
+
 module.exports = router;

@@ -7,6 +7,7 @@ import {format, formatDistance, formatRelative, subDays} from 'date-fns'
 import {add} from "date-fns";
 import {useMainStore} from "@/stores/mainStore";
 import {useVocabulariesStore} from "@/stores/vocabulariesStore";
+import {usePeriod} from "@/stores/usePeriod";
 
 export const usePersonalPageStore = defineStore("globalPageStore", () => {
     const activeCategory = ref(localStorage.getItem("activeCategory") || "Велосипеды");
@@ -15,10 +16,13 @@ export const usePersonalPageStore = defineStore("globalPageStore", () => {
     const colorSpecificationsItems = ref([])
     const popularSuppliersItems = ref([])
     const popularProductsItems = ref([])
-    const dbeg = ref(add(new Date(), {
-        years: -3
-    }))
-    const dend = ref(new Date())
+    const analogProviders = ref([])
+
+    const {
+        activePeriod,
+        dend,
+        dbeg,
+    } = usePeriod();
 
     const vocabulariesStore = useVocabulariesStore();
     const {
@@ -115,7 +119,7 @@ export const usePersonalPageStore = defineStore("globalPageStore", () => {
                 left: 0,
                 top: 20,
                 bottom: 20,
-              },
+            },
             tooltip: {
                 trigger: 'item'
 
@@ -155,34 +159,34 @@ export const usePersonalPageStore = defineStore("globalPageStore", () => {
             toolbox: {
                 right: 10,
                 feature: {
-                  dataZoom: {
-                    yAxisIndex: 'none'
-                  },
-                  saveAsImage: {}
+                    dataZoom: {
+                        yAxisIndex: 'none'
+                    },
+                    saveAsImage: {}
                 }
-              },
-              dataZoom: [
+            },
+            dataZoom: [
                 {
-                  type: 'slider',
-                  xAxisIndex: 0,
-                  filterMode: 'none'
+                    type: 'slider',
+                    xAxisIndex: 0,
+                    filterMode: 'none'
                 },
                 {
-                  type: 'slider',
-                  yAxisIndex: 0,
-                  filterMode: 'none'
+                    type: 'slider',
+                    yAxisIndex: 0,
+                    filterMode: 'none'
                 },
                 {
-                  type: 'inside',
-                  xAxisIndex: 0,
-                  filterMode: 'none'
+                    type: 'inside',
+                    xAxisIndex: 0,
+                    filterMode: 'none'
                 },
                 {
-                  type: 'inside',
-                  yAxisIndex: 0,
-                  filterMode: 'none'
+                    type: 'inside',
+                    yAxisIndex: 0,
+                    filterMode: 'none'
                 }
-              ],
+            ],
             xAxis: {
                 type: 'category',
                 data: quantityDynamicItems.value.map(x => format(x.date, 'dd.MM.yy'))

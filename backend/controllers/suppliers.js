@@ -124,7 +124,7 @@ class Suppliers {
   async getAssociatedCte (req, res) {
 
     if (!req.body) return response.sendStatus(400);
-  
+
     const list = await sequelize.query(
         `	WITH tbl as (SELECT category, count(*) as count
         FROM (SELECT DISTINCT cte.category as category, contract_id
@@ -148,6 +148,7 @@ ORDER BY 2 DESC limit 3 offset 1`,
    
     return res.json(list);
   }
-  
+
+
 }
 module.exports = new Suppliers();
