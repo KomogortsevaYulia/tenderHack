@@ -21,6 +21,7 @@ const {
 
     loadingPopularSuppliers,
     loadingPopularProducts,
+    colorSpecificationsItems,
     loadingPopularCategory,
     loadingActiveCategorySpecifications,
     loadingActiveCategoryRelativeCategories,
@@ -65,10 +66,10 @@ const {
         </div>
     </div>
     <div class="row mt-4">
-        <div class=" pe-lg-5 col-12 pt-2 ps-0" :class="{ 'col-lg-7': colorSpecificationsItemsChartData.series?.data?.length > 0 }">
+        <div class="col-lg-7 col-12 pe-lg-5 pt-2 ps-0" >
             <Echart :chart-data="quantityDynamicsChartData" :loading="loadingActiveCategoryQuantityDynamic" />
         </div>
-        <div class="col-lg-5 border rounded col-12 pt-2" v-if="colorSpecificationsItemsChartData.series?.data?.length > 0">
+        <div class="col-lg-5 border rounded col-12 pt-2" >
             <Echart :chart-data="colorSpecificationsItemsChartData" :loading="loadingActiveCategorySpecifications" />
         </div>
     </div>
