@@ -15,6 +15,7 @@ const {
     quantityDynamicsChartData,
     colorSpecificationsItemsChartData,
     popularSuppliersItems,
+    popularCategoryItems,
     popularProductsItems,
     activePeriod,
     relativeCategories,
@@ -31,9 +32,9 @@ const {
 
     <h1>Глобальный рейтинг поставщиков</h1>
 
-    <PopularItems class="mt-4" title="Востребованные категории" :items="popularProductsItems" v-slot="{item}">
+    <PopularItems class="mt-4" title="Востребованные категории" :items="popularCategoryItems" v-slot="{item}">
         <div class="d-flex flex-column justify-content-center align-items-center h-100">
-            <div class="flex-grow-1 d-flex pb-2 fw-bold align-items-center text-center">{{ item.title }}</div>
+            <div class="flex-grow-1 d-flex pb-2 fw-bold align-items-center text-center">{{ item.category }}</div>
             <div class="badge bg-gradient1 align-self-stretch">Закупок: {{ item.count }}</div>
         </div>
     </PopularItems>
