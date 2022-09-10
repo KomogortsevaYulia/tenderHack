@@ -15,12 +15,12 @@ const {
     popularCategoryItems,
     popularSuppliersItems,
     popularProductsItems,
+    analogProviders,
 } = storeToRefs(globalPageStore)
 
 const {
     categories
 } = storeToRefs(vocabulariesStore)
-
 
 </script>
 
@@ -46,6 +46,13 @@ const {
 <!--        <div class="badge bg-primary me-2">КПП: {{ item.provider_kpp }}</div>-->
 <!--        <div class="badge bg-gradient1">Закупок: {{ item.count }}</div>-->
 <!--    </PopularItems>-->
+    <PopularItems class="mt-4" title="Поставщики выставляющие закупки в ваших категориях" :items="analogProviders" v-slot="{item}">
+        <div class="d-flex flex-column justify-content-center align-items-center h-100">
+            <div class="flex-grow-1 d-flex pb-2 fw-bold align-items-center text-center">{{ item.provider_title }}</div>
+            <div class="badge bg-gradient1 align-self-stretch mb-1">Закупок: {{ item.count }}</div>
+            <div class="badge bg-gradient1 align-self-stretch">Объем закупок: {{ item.sum }}₽</div>
+        </div>
+    </PopularItems>
 
     <div>Похожие поставщики</div>
     <div>Выводим заказчиков этих постовщиков которые покапают наши товары</div>

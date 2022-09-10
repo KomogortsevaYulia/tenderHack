@@ -30,6 +30,18 @@ export const usePersonalPageStore = defineStore("globalPageStore", () => {
         categories
     } = storeToRefs(vocabulariesStore)
 
+
+    async function fetchAnalogProviders() {
+         let params = {
+            // 'firstDay': format(dbeg.value, 'dd.MM.yy'),
+            // 'lastDay': format(dend.value, 'dd.MM.yy'),
+        }
+        let r = await axios.get('/api/personal/getAnalogProviders', {
+            params
+        })
+        analogProviders.value = r.data;
+    }
+
     async function fetchPopularSuppliers() {
         let params = {
             'category': activeCategory.value,
@@ -92,7 +104,8 @@ export const usePersonalPageStore = defineStore("globalPageStore", () => {
             fetchActiveCategorySpecifications(),
             fetchPopularCategory(),
             fetchActiveCategoryQuantityDynamic(),
-            // fetchPopularSuppliers(),
+            // // fetchPopularSuppliers(),
+            fetchAnalogProviders(),
             fetchPopularProducts(),
         ])
     }
@@ -238,6 +251,7 @@ export const usePersonalPageStore = defineStore("globalPageStore", () => {
 
         activeCategory,
         popularCategoryItems,
+        analogProviders,
         quantityDynamicsChartData,
         colorSpecificationsItemsChartData,
         popularSuppliersItems,
