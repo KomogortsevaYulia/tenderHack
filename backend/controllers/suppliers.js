@@ -2,6 +2,7 @@ const models = require("../models");
 const { Sequelize } = require("sequelize");
 const sequelize = require("../db");
 const  { format, compareAsc } =require( 'date-fns');
+const { PROVIDER_TITLE } = require("../consts");
 
 
 class Suppliers {
@@ -93,6 +94,7 @@ class Suppliers {
    
     return res.json(list);
   }
+  
   
 }
 module.exports = new Suppliers();

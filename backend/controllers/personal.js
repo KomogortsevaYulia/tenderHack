@@ -9,7 +9,7 @@ const {PROVIDER_TITLE} = require("../consts");
 class Personal {
   
 
- async getDynamics(req, res) {
+async getDynamics(req, res) {
 
     if (!req.body) return response.sendStatus(400);
     const list = await sequelize.query(
@@ -69,6 +69,7 @@ class Personal {
    
     return res.json(list);
   }
+
   async getCategories(req, res) {
 
     if (!req.body) return response.sendStatus(400);
@@ -92,5 +93,33 @@ class Personal {
     return res.json(list);
   }
 
+  async getTypesContracts(req, res) {
+
+    if (!req.body) return response.sendStatus(400);
+  
+    const list = await sequelize.query(
+        `		   
+        WITH average as (
+            select AVG(id) as a from cte
+        )
+        SELECT 
+               CASE WHEN cte_id is null THEN 0
+                    WHEN cte_id < (select a from average)  THEN 1
+                    ELSE 2
+               END as value, count(*)
+            FROM contract_to_cte
+             join contracts b on contract_id=b.id
+            where b.contract_date > ? and b.contract_date < ? and b.provider_title = ? 
+            group by value
+            `,
+      {
+        replacements: [req.query.firstDay,req.query.lastDay,PROVIDER_TITLE],
+        type: Sequelize.QueryTypes.SELECT,
+      } 
+    );
+
+   
+    return res.json(list);
+  }
 }
 module.exports = new Personal();
