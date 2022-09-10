@@ -7,7 +7,7 @@ import {usePersonalPageStore} from "@/stores/personalPageStore";
 import {onBeforeRouteUpdate} from "vue-router";
 
 const vocabulariesStore = useVocabulariesStore();
-const globalPageStore = usePersonalPageStore();
+const personalPageStore = usePersonalPageStore();
 
 const {
     activeCategory,
@@ -17,8 +17,13 @@ const {
     popularSuppliersItems,
     popularProductsItems,
     analogProviders,
-    typesContracts
-} = storeToRefs(globalPageStore)
+    typesContracts,
+
+    loadingActiveCategoryQuantityDynamic,
+    loadingPopularProducts,
+    loadingAnalogProviders,
+    activePeriod,
+} = storeToRefs(personalPageStore)
 
 const {
     categories
@@ -27,6 +32,14 @@ const {
 
 <template>
     <h1>ООО "Жизнь офиса"</h1>
+
+    <div class="btn-group ms-3" role="group" aria-label="Basic example">
+        <button type="button" class="btn" :class="{'btn-primary': activePeriod===7, 'btn-light': activePeriod!==7}" @click="activePeriod=7">1Н</button>
+        <button type="button" class="btn" :class="{'btn-primary': activePeriod===30, 'btn-light': activePeriod!==30}" @click="activePeriod=30">1М</button>
+        <button type="button" class="btn" :class="{'btn-primary': activePeriod===90, 'btn-light': activePeriod!==90}" @click="activePeriod=90">3М</button>
+        <button type="button" class="btn" :class="{'btn-primary': activePeriod===180, 'btn-light': activePeriod!==180}" @click="activePeriod=180">6М</button>
+        <button type="button" class="btn" :class="{'btn-primary': activePeriod===365, 'btn-light': activePeriod!==365}" @click="activePeriod=365">1Г</button>
+    </div>
     <div class="row mt-4">
         <div class="col-12">
             <Echart :chart-data="quantityDynamicsChartData" :loading="loadingActiveCategoryQuantityDynamic"/>
