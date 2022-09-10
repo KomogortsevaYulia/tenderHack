@@ -67,12 +67,12 @@ defineExpose({
     <Teleport to="body">
         <div class="modal fade" ref="modal" tabindex="-1" >
             <div class="modal-dialog" :class="klass">
-                <div class="modal-content">
+                <div class="modal-content" style="max-height: 90vh">
                     <div class="modal-header">
                         <h5 class="modal-title">{{ title }}</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="modal-body">
+                    <div class="modal-body" style="overflow-y: auto">
                         <slot></slot>
                     </div>
                     <div class="modal-footer" v-if="okTitle || cancelTitle">

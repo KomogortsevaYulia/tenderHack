@@ -12,14 +12,18 @@ import {useDynamicChart} from "@/stores/dynamicChart";
 
 export const usePersonalPageStore = defineStore("personalPageStore", () => {
     const activeCategory = ref(localStorage.getItem("activeCategory") || "Велосипеды");
+    
     const personalCategories = ref([]);
+    const cteForRecommendations = ref([]);
     const typesContracts = ref([]);
     const quantityDynamicItems = ref([])
     const colorSpecificationsItems = ref([])
     const popularSuppliersItems = ref([])
     const popularProductsItems = ref([])
+    const activeProviders = ref([])
     const popularCategoryItems = ref([])
     const analogProviders = ref([])
+    const providerClients = ref([])
 
     const loadingAnalogProviders = ref(false);
     const loadingPopularSuppliers = ref(false);
@@ -38,9 +42,25 @@ export const usePersonalPageStore = defineStore("personalPageStore", () => {
     const {
         categories
     } = storeToRefs(vocabulariesStore)
+////////////////////////////////////////////////////////////////////////////////////////
+    async function fetchProviderClients(provider_title) {
+        let params = {
+            'provider_title': provider_title
+        }
+        let r = await axios.get('/api/opponent/getClientByOpponent', {
+            params
+        })
+        providerClients.value = r.data;
+    }
 
-    async function fetchProviderClients() {
-
+    async function fetchСteForRecommendations(customer_title) {
+        let params = {
+            'title': customer_title
+        }
+        let r = await axios.get('/api/personal/getCteForRecommendations', {
+            params
+        })
+        cteForRecommendations.value = r.data;
     }
 
     async function fetchAnalogProviders() {
@@ -106,6 +126,7 @@ export const usePersonalPageStore = defineStore("personalPageStore", () => {
         colorSpecificationsItems.value = r.data;
     }
 
+    
     async function fetchActiveCategoryQuantityDynamic() {
         loadingActiveCategoryQuantityDynamic.value = true;
         let r = await axios.get("/api/personal/dynamics", {
@@ -167,10 +188,13 @@ export const usePersonalPageStore = defineStore("personalPageStore", () => {
         fetchActiveCategorySpecifications,
         fetchPopularProducts,
         fetchProviderClients,
+        fetchСteForRecommendations,
         refetchAll,
 
         typesContracts,
+        cteForRecommendations,
         activeCategory,
+        providerClients,
         popularCategoryItems,
         analogProviders,
         quantityDynamicsChartData,
@@ -178,6 +202,7 @@ export const usePersonalPageStore = defineStore("personalPageStore", () => {
         popularSuppliersItems,
         popularProductsItems,
         activePeriod,
+        activeProviders,
 
         loadingAnalogProviders,
         loadingPopularSuppliers,

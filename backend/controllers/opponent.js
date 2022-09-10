@@ -13,7 +13,7 @@ class Opponent {
       FROM contract_to_cte
       JOIN contracts c ON c.id = contract_to_cte.contract_id
 	    JOIN cte b ON b.id = contract_to_cte.cte_id
-      WHERE c.provider_title=?
+      WHERE c.provider_title = ?
       group by c.customer_title,c.customer_inn , c.customer_kpp 
       order by 4 desc
       `,
