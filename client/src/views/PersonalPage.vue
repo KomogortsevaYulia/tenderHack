@@ -61,7 +61,7 @@ const {
 </script>
 
 <template>
-    <h1>ООО "Жизнь офиса"         <b-hint tip="Подсказка" /></h1>
+    <h1>ООО "Жизнь офиса"         </h1>
 
     <div class="btn-group ms-3" role="group" aria-label="Basic example">
         <button type="button" class="btn" :class="{'btn-primary': activePeriod===7, 'btn-light': activePeriod!==7}"
@@ -81,15 +81,21 @@ const {
         </button>
     </div>
     <div class="row mt-4">
-        <div class="col-lg-10 col-12 pe-lg-5 pt-2 ps-0">
+        <div class="col-12 pe-lg-5 pt-2 ps-0">
             <Echart :chart-data="quantityDynamicsChartData" :loading="loadingActiveCategoryQuantityDynamic"/>
-        </div>
-        <div class="alert alert-primary  col-lg-2  col-12 pt-2 " role="alert">
+        </div>        
+    </div>
 
-                Распределение закупок: <br>
-
-                <span v-for="i in typesContracts">
-                    {{ i.value }} - {{ i.count }} <br>
+    <div class="row mt-4 ">
+        <div class="alert alert-primary align-self-start col-12 pt-2 " role="alert">
+                Распределение закупок: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <span v-for="(i, index) in typesContracts">
+                    <b-hint :tip="index == 0 ? 'Закупка по потребности – сбор коммерческих предложений в форме ставок участников для заключения контракта с любым из них' 
+                                : index==1 ? 'Котировочная сессия – переговоры по инициативе заказчика о существенных условиях предложения поставщика для заключении контракта' 
+                                : 'Прямая закупка – сбор коммерческих предложений в форме ставок участников для заключения контракта с любым из них. Еще называют закупкой у единственного поставщика'"
+                                 >
+                        {{ i.value }} - {{ i.count }} &nbsp;   &nbsp;&nbsp;
+                    </b-hint>
                 </span>
         </div>
     </div>
@@ -104,12 +110,9 @@ const {
         </div>
     </PopularItems>
 
-    <div class="row mt-4 ">
-      
-    </div>
-
-    <PopularItems class="mt-4" title="Ваши категории" :items="popularCategoryItems" v-slot="{item}">
+    <PopularItems class="mt-4" title="Ваши категории" :items="popularCategoryItems" v-slot="{item, index}">
         <div class="d-flex flex-column justify-content-center align-items-center h-100">
+            <h3>{{index + 1}}</h3>
             <div class="flex-grow-1 d-flex pb-2 fw-bold align-items-center text-center">{{ item.category }}</div>
             <div class="badge bg-gradient1 align-self-stretch">Закупок: {{ item.count }}</div>
             <div class="alert alert-primary col" role="alert">
@@ -133,7 +136,7 @@ const {
 
     <div class="mb-4"></div>
 
-    <BModal ref="modalRef" size="xl" :title="activeProviders">
+    <BModal ref="modalRef" size="xl" :title="`Список клиентов ${activeProviders}`">
         <div class="row" style="height: 50vh;">
             <div class="col-6" style="height: 100%">
                 <div class="list-group" id="list-tab" role="tablist" style="overflow-y: auto; height: 100%">
