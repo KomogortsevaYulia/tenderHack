@@ -24,6 +24,8 @@ const itemsField = computed(() => {
             return true
         }
     })})
+const activeClientTitle = ref("")
+
 
 const {
     activeCategory,
@@ -52,6 +54,7 @@ function clientClick(provider_title) {
 }
 
 function customerClick(title) {
+    activeClientTitle.value = title;
     personalPageStore.fetchСteForRecommendations(title);
 }
 
@@ -137,11 +140,11 @@ const {
     <div class="mb-4"></div>
 
     <BModal ref="modalRef" size="xl" :title="`Список клиентов ${activeProviders}`">
-        <div class="row" style="height: 50vh;">
+        <div class="row" style="height: 70vh;">
             <div class="col-6" style="height: 100%">
                 <div class="list-group" id="list-tab" role="tablist" style="overflow-y: auto; height: 100%">
                     <template v-for="i in providerClients">
-                        <span class="list-group-item list-group-item-action" id="list-home-list" data-toggle="list"
+                        <span class="list-group-item list-group-item-action" :class="{'active': activeClientTitle == i.customer_title}" id="list-home-list" data-toggle="list"
                               role="tab"
                               @click="customerClick(i.customer_title)">{{ i.customer_title }} <br>
                                 <i>ИНН:{{ i.customer_inn }}
@@ -151,16 +154,18 @@ const {
                 </div>
             </div>
             <div class="col-6 d-flex flex-column" style="height: 100%;">
-                <input type="text" class="form-control mb-2" v-model="filter">
-                <div class="flex-grow-1 pt-3  flex-wrap"
-                     style="overflow-y: auto; overflow-x: hidden; display: grid; grid-template-columns: repeat(3, 1fr); grid-gap: 2px">
+                <h4>Товары преобретаемые клиентом</h4>
+                <input type="text" placeholder="Введите название СТЕ" class="form-control mb-2" v-model="filter">
+                <div class="flex-grow-1 pt-3  flex-wrap width-100"
+                     style="overflow-y: auto; overflow-x: hidden; display: grid; grid-template-columns: repeat(2, 1fr); grid-gap: 2px; max-width: 100%;">
                     <template v-for="i in itemsField">
+                        <BHint :tip="`Количество реализованных единиц товара: ${i.count}`">
                         <button class="btn btn-sm position-relative bg-light "
                                 style="background-color:darkgray; white-space: normal; ">
-                            {{ i.title }}
-                            <span class="badge bg-danger">от {{ i.avg }}₽</span>
-                            
+                                {{ i.title }}
+                                <span class="badge bg-danger">от {{ i.avg }}₽</span>
                         </button>
+                        </BHint>
                     </template>
                 </div>
             </div>
