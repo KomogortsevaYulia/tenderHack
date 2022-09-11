@@ -77,7 +77,7 @@ const {
 
     <div class="row mt-4 ">
         <div class="alert alert-primary col me-2" role="alert">
-            В качестве сопутствующих товаров закупаются <br>
+            В качестве сопутствующих товаров/работ/услуг закупаются <br>
             <span v-for="i in relativeCategories">
                 в {{i.percent}}% случаев {{i.category.toLowerCase()}}; <br>
             </span>

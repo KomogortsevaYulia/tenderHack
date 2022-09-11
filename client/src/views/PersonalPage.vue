@@ -113,7 +113,7 @@ const {
             <div class="badge bg-gradient1 align-self-stretch">Закупок: {{ item.count }}</div>
             <div class="alert alert-primary col" role="alert">
 
-                В качестве сопутствующих товаров закупаются
+                В качестве сопутствующих товаров/работ/услуг закупаются
                 <span v-for="i in item.items">
                     в <span style="font-weight: bold;">{{ i.percent }}%</span> случаев <span
                     style="font-weight: bold;">{{ i.category.toLowerCase() }}</span>;
