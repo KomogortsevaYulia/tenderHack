@@ -27,13 +27,14 @@ class Suppliers {
         type: Sequelize.QueryTypes.SELECT,
       }
     );
-
-    let response = await axios.post('http://localhost:5000/predict', {'data': list})
+    if(process.env.NEURAL_HOST_PORT){
+    let response = await axios.post(`http://${process.env.NEURAL_HOST_PORT}/predict`, {'data': list})
     let readedJson = JSON.parse(response.data['data'])
     for (var i = 0; i < readedJson['index'].length; i++) {
       let date = format(new Date(readedJson['index'][i]), 'yyyy-MM-dd')
       list.push({date:date, count:Math.round(readedJson['data'][i][0])})
     }
+  }
     return res.json(list);
   }
 

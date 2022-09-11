@@ -81,8 +81,16 @@ const {
         </button>
     </div>
     <div class="row mt-4">
-        <div class="col-12">
+        <div class="col-lg-10 col-12 pe-lg-5 pt-2 ps-0">
             <Echart :chart-data="quantityDynamicsChartData" :loading="loadingActiveCategoryQuantityDynamic"/>
+        </div>
+        <div class="alert alert-primary  col-lg-2  col-12 pt-2 " role="alert">
+
+                Распределение закупок: <br>
+
+                <span v-for="i in typesContracts">
+                    {{ i.value }} - {{ i.count }} <br>
+                </span>
         </div>
     </div>
 
@@ -97,14 +105,7 @@ const {
     </PopularItems>
 
     <div class="row mt-4 ">
-        <div class="alert alert-primary col" role="alert">
-
-            Распределение закупок: <br>
-
-            <span v-for="i in typesContracts">
-                {{ i.value }} - {{ i.count }} <br>
-            </span>
-        </div>
+      
     </div>
 
     <PopularItems class="mt-4" title="Ваши категории" :items="popularCategoryItems" v-slot="{item}">
@@ -155,6 +156,7 @@ const {
                                 style="background-color:darkgray; white-space: normal; ">
                             {{ i.title }}
                             <span class="badge bg-danger">от {{ i.avg }}₽</span>
+                            
                         </button>
                     </template>
                 </div>
