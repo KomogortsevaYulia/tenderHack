@@ -63,6 +63,15 @@ export function useDynamicChart(data) {
                 position: 'left',
                 offset: 45
             },
+            // visualMap: [{
+            //   show: false,
+            //   dimension: 0,
+            //   min: 1,
+            //   max: Math.max(0, (data.value?.length || 0) -8),
+            //   inRange:{
+            //     color:['green', 'red']
+            //     }
+            // }],          
             series: [
                 {
                     name: 'Закупки',
@@ -89,8 +98,29 @@ export function useDynamicChart(data) {
                     emphasis: {
                         focus: 'series'
                     },
-                    data: data.value.map(x => x.count)
+                    data: data.value.slice(1, data.value.length - 7).map(x => x.count)
                 },
+                {
+                  name: 'Predicted',
+                  type: 'line',
+                  stack: 'Total',
+                  smooth: true,
+                  lineStyle: {
+                      width: 3,
+                      type:"dashed"
+                  },
+                  showSymbol: false,
+                  
+                  emphasis: {
+                      focus: 'series'
+                  },
+                  data: data.value.map((x, index) => {
+                    if (index > data.value.length - 9) {
+                      return Math.max(0, x.count)
+                    }
+                    return null
+                  })
+              },
                 
             ]
         }
@@ -100,3 +130,4 @@ export function useDynamicChart(data) {
         optionsChart
     }
 }
+// .Math.max(0, data.length -8),
