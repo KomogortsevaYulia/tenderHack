@@ -71,7 +71,7 @@ export function useDynamicChart(data) {
             //   inRange:{
             //     color:['green', 'red']
             //     }
-            // }],          
+            // }],
             series: [
                 {
                     name: 'Закупки',

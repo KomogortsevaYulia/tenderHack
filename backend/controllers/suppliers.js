@@ -8,7 +8,6 @@ const { PROVIDER_TITLE } = require("../consts");
 var request = require('request');
 const {cacheWrapper} = require("../cache");
 
-
 class Suppliers {
   
   async getDynamics(req, res) {
