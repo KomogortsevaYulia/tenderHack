@@ -7,7 +7,6 @@ const  { format, compareAsc } =require( 'date-fns');
 const { PROVIDER_TITLE } = require("../consts");
 var request = require('request');
 
-
 class Suppliers {
   
   async getDynamics(req, res) {
