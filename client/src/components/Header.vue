@@ -12,7 +12,7 @@ import {computed, watch} from "vue";
 <template>
     <nav class="navbar  navbar-expand-lg sticky-top bg-white">
         <div class="container">
-            <a class="navbar-brand" href="#">Поставщики</a>
+            <a class="navbar-brand" href="#">Аналитика</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
                     aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -21,12 +21,12 @@ import {computed, watch} from "vue";
                 <ul class="nav nav-pills">
                    <li class="nav-item">
                     <router-link to="/" class="nav-link" active-class="active">
-                        Глобальный
+                        Глобальная
                      </router-link>
                   </li>
                   <li class="nav-item">
                     <router-link to="/personal"  class="nav-link ms-2" active-class="active">
-                        Персональный
+                        Персональная
                      </router-link>
                   </li>
                 </ul>

@@ -4,7 +4,8 @@ import PopularItems from '../components/Items.vue'
 import { useVocabulariesStore } from "@/stores/vocabulariesStore";
 import { storeToRefs } from "pinia";
 import { useGlobalPageStore } from "@/stores/globalPageStore";
-import Echart from '../components/Charts/Echart.vue'
+import Echart from '../components/Charts/Echart.vue';
+import BHint from "@/components/BHint.vue";
 
 const vocabulariesStore = useVocabulariesStore();
 const globalPageStore = useGlobalPageStore();
@@ -36,9 +37,6 @@ const {
 </script>
 
 <template>
-
-    <h1>Глобальный рейтинг поставщиков</h1>
-
     <PopularItems class="mt-4" title="Востребованные категории" :items="popularCategoryItems" v-slot="{item}" :loading="loadingPopularCategory">
         <div class="d-flex flex-column justify-content-center align-items-center h-100">
             <div class="flex-grow-1 d-flex pb-2 fw-bold align-items-center text-center">{{ item.category }}</div>
@@ -53,8 +51,11 @@ const {
         </div>
     </PopularItems>
 
+<hr class="mt-5">
 
-    <div class="d-flex mt-4">
+    <div class="d-flex align-items-center mt-4">
+        
+        <h5 class="me-2">Категория: </h5>
         <select v-model="activeCategory" class="form-control">
             <option :value="c.code" v-for="c in categories">{{ c.label }}</option>
         </select>
@@ -83,17 +84,21 @@ const {
             </span>
         </div>
         <div class="alert alert-primary col" role="alert">
-
-            Распределение закупок: <br>
-
-            <span v-for="i in typesContracts">
-                {{ i.value }} - {{ i.count }} <br>
-            </span>
+            Распределение закупок:<br>
+                <span v-for="(i, index) in typesContracts">
+                    <b-hint :tip="index == 0 ? 'Закупка по потребности – сбор коммерческих предложений в форме ставок участников для заключения контракта с любым из них' 
+                                : index==1 ? 'Котировочная сессия – переговоры по инициативе заказчика о существенных условиях предложения поставщика для заключении контракта' 
+                                : 'Прямая закупка – сбор коммерческих предложений в форме ставок участников для заключения контракта с любым из них. Еще называют закупкой у единственного поставщика'"
+                                 >
+                        {{ i.value }} - {{ i.count }} <br>
+                    </b-hint>
+                </span>
         </div>
     </div>
 
-    <PopularItems class="mt-4 mb-4" title="Топ поставщиков" :items="popularSuppliersItems" v-slot="{item}" :loading="loadingPopularSuppliers">
-        <h5>{{ item.provider_title }}</h5>
+    <PopularItems class="mt-4 mb-4" title="Топ поставщиков" :items="popularSuppliersItems" v-slot="{item,index}" :loading="loadingPopularSuppliers">
+        <span>{{index + 1}}</span>
+        <div class="flex-grow-1 d-flex pb-2 fw-bold align-items-center text-center">{{ item.provider_title }}</div>
         <div class="badge bg-primary me-2">ИНН: {{ item.provider_inn }}</div>
         <div v-if=item.provider_kpp class="badge bg-primary me-2">КПП: {{ item.provider_kpp }}</div>
         <div class="badge bg-gradient1">Закупок: {{ item.count }}</div>
