@@ -6,7 +6,7 @@ import Echart from '../components/Charts/Echart.vue'
 import { usePersonalPageStore } from "@/stores/personalPageStore";
 import { onBeforeRouteUpdate } from "vue-router";
 import BModal from "@/components/BModal.vue";
-import { ref } from "vue";
+import {computed, ref} from "vue";
 
 const vocabulariesStore = useVocabulariesStore();
 const personalPageStore = usePersonalPageStore();
