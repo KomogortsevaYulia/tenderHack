@@ -186,7 +186,7 @@ order by 3 DESC`,
         join contracts b on contract_id=b.id
         where b.provider_title = ?
         group by cte.category
-        order by 2 desc limit 50`,
+        order by 2 desc limit 5`,
       {
         replacements: [PROVIDER_TITLE],
         type: Sequelize.QueryTypes.SELECT,
