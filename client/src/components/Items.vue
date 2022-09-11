@@ -27,8 +27,8 @@ const style = computed(() => {
     <div>
         <h2><span v-if="loading" class="spinner-border" role="status"></span> {{title}}</h2>
         <div class="row" :style=style>
-            <div class="col p-4 border" v-for="i in items">
-                 <slot :item="i"></slot>
+            <div class="col p-4 border" v-for="(i, index) in items">
+                <slot :item="i" :index="index"></slot>
             </div>
         </div>
     </div>

@@ -22,7 +22,9 @@ onBeforeUnmount(() => {
 
 
 <template>
-    <i class="fa-solid fa-circle-question" ref="elRef" :data-bs-title="tip"></i>
+    <span  ref="elRef" :data-bs-title="tip">
+    <slot></slot>
+    </span>
 </template>
 
 <style scoped>
