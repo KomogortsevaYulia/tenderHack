@@ -46,14 +46,12 @@ router.get("/personal/getAnalogProviders",personal.getAnalogProviders);
 //сопутсвующие товары данного поставщика
 router.get("/personal/getAssociatedCte",personal.getAssociatedCte);
 
-
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
-//сопутсвующие товары данного поставщика
+//выдает клиентов конкурентов
 router.get("/opponent/getClientByOpponent",opponent.getClientByOpponent);
 
+router.get("/personal/getCteForRecommendations",personal.getCteForRecommendations)
 
 
 module.exports = router;
