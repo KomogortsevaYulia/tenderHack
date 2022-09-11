@@ -7,6 +7,7 @@ import { usePersonalPageStore } from "@/stores/personalPageStore";
 import { onBeforeRouteUpdate } from "vue-router";
 import BModal from "@/components/BModal.vue";
 import {computed, ref} from "vue";
+import BHint from "@/components/BHint.vue";
 
 const vocabulariesStore = useVocabulariesStore();
 const personalPageStore = usePersonalPageStore();
@@ -60,7 +61,7 @@ const {
 </script>
 
 <template>
-    <h1>ООО "Жизнь офиса"</h1>
+    <h1>ООО "Жизнь офиса"         <b-hint tip="Подсказка" /></h1>
 
     <div class="btn-group ms-3" role="group" aria-label="Basic example">
         <button type="button" class="btn" :class="{'btn-primary': activePeriod===7, 'btn-light': activePeriod!==7}"

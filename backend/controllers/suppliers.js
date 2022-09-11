@@ -1,8 +1,11 @@
 const models = require("../models");
+const axios = require('axios').default;
+
 const { Sequelize } = require("sequelize");
 const sequelize = require("../db");
 const  { format, compareAsc } =require( 'date-fns');
 const { PROVIDER_TITLE } = require("../consts");
+var request = require('request');
 
 
 class Suppliers {
@@ -10,20 +13,27 @@ class Suppliers {
   async getDynamics(req, res) {
 
     if (!req.body) return response.sendStatus(400);
-   
+
     const list = await sequelize.query(
       `SELECT c.contract_date::date AS date , sum(quantity) AS count
       FROM contract_to_cte
       JOIN contracts c ON c.id = contract_to_cte.contract_id
-      WHERE c.contract_date > ? and c.contract_date < ? and contract_to_cte.cte_id in (SELECT id
+      WHERE contract_to_cte.cte_id in (SELECT id
                     FROM cte
                     WHERE category = ? )
                     group by  c.contract_date::date`,
       {
-        replacements: [req.query.firstDay,req.query.lastDay,req.query.category],
+        replacements: [req.query.category],
         type: Sequelize.QueryTypes.SELECT,
-      } 
+      }
     );
+
+    let response = await axios.post('http://localhost:5000/predict', {'data': list})
+    let readedJson = JSON.parse(response.data['data'])
+    for (var i = 0; i < readedJson['index'].length; i++) {
+      let date = format(new Date(readedJson['index'][i]), 'yyyy-MM-dd')
+      list.push({date:date, count:Math.round(readedJson['data'][i][0])})
+    }
     return res.json(list);
   }
 
