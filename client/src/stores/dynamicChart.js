@@ -91,6 +91,7 @@ export function useDynamicChart(data) {
                     },
                     data: data.value.map(x => x.count)
                 },
+                
             ]
         }
     });
