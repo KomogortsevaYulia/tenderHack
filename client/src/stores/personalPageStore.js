@@ -166,7 +166,7 @@ export const usePersonalPageStore = defineStore("personalPageStore", () => {
     }, 500)
 
     watch(categories, async () => {
-        refetchAll();
+        // refetchAll();
     });
 
     watch(activePeriod, async () => {
