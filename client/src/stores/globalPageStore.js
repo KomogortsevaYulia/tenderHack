@@ -138,7 +138,7 @@ export const useGlobalPageStore = defineStore("globalPageStore", () => {
                 date: new Date(x.date),
                 count: x.count
             }
-        }).sortBy(x => x.date).value();
+        }).sortBy(x => x.date).filter(x => x.date >= dbeg.value).value();
     }
 
     const refetchAll = _.debounce(async () => {

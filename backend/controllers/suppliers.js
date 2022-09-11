@@ -6,13 +6,14 @@ const sequelize = require("../db");
 const  { format, compareAsc } =require( 'date-fns');
 const { PROVIDER_TITLE } = require("../consts");
 var request = require('request');
-
+const {cacheWrapper} = require("../cache");
 
 class Suppliers {
   
   async getDynamics(req, res) {
 
     if (!req.body) return response.sendStatus(400);
+
 
     const list = await sequelize.query(
       `SELECT c.contract_date::date AS date , sum(quantity) AS count
@@ -28,12 +29,12 @@ class Suppliers {
       }
     );
     if(process.env.NEURAL_HOST_PORT){
-        let response = await axios.post(`http://${process.env.NEURAL_HOST_PORT}/predict`, {'data': list}).catch(res => console.log(res))
-        let readedJson = JSON.parse(response.data['data'])
-        for (var i = 0; i < readedJson['index'].length; i++) {
-          let date = format(new Date(readedJson['index'][i]), 'yyyy-MM-dd')
-          list.push({date:date, count:Math.round(readedJson['data'][i][0])})
-        }
+        // let response = await axios.post(`http://${process.env.NEURAL_HOST_PORT}/predict`, {'data': list}).catch(res => console.log(res))
+        //let readedJson = JSON.parse(response.data['data'])
+        //for (var i = 0; i < readedJson['index'].length; i++) {
+        //  let date = format(new Date(readedJson['index'][i]), 'yyyy-MM-dd')
+        //  list.push({date:date, count:Math.round(readedJson['data'][i][0])})
+        //}
       }
     return res.json(list);
   }
@@ -62,8 +63,9 @@ class Suppliers {
 
     if (!req.body) return response.sendStatus(400);
   
-    const list = await sequelize.query(
-        `		   
+    const list =  await cacheWrapper(`getSuppliersPopularProducts_${req.query.firstDay}_${req.query.lastDay}`, async () =>{
+        return await sequelize.query(
+            `		   
         select title,count(*)
         from cte 
         join contract_to_cte c on c.cte_id=cte.id
@@ -72,12 +74,12 @@ class Suppliers {
         group by title 
         order by 2 desc
         limit 5`,
-      {
-        replacements: [req.query.firstDay,req.query.lastDay],
-        type: Sequelize.QueryTypes.SELECT,
-      } 
-    );
-
+            {
+                replacements: [req.query.firstDay,req.query.lastDay],
+                type: Sequelize.QueryTypes.SELECT,
+            }
+        );
+    })
    
     return res.json(list);
   }
