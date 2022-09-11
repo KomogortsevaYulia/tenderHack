@@ -1,14 +1,12 @@
 from datetime import datetime
 from flask import Flask, request, jsonify
 import pandas as pd
-import matplotlib.pyplot as plt
-import matplotlib as mpl
-from statsmodels.tsa.seasonal import seasonal_decompose
-from statsmodels.graphics.tsaplots import plot_acf, plot_pacf
 
 from darts import TimeSeries
-from darts.models.forecasting.tcn_model import TCNModel
+# from darts.models.forecasting.tcn_model import TCNModel
+# from darts.models.forecasting.tcn_model import TCNModel
 from darts.metrics import *
+from darts.models import *
 from darts.dataprocessing.transformers import Scaler
 
 app = Flask(__name__)
