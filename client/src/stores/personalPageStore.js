@@ -139,7 +139,9 @@ export const usePersonalPageStore = defineStore("personalPageStore", () => {
         quantityDynamicItems.value = _(r.data).map(x => {
             return {
                 date: new Date(x.date),
-                count: x.count
+                count: x.count,
+                total_amount: x.total_amount,
+                avg_amount: x.avg_amount,
             }
         }).sortBy(x => x.date).value();
     }
