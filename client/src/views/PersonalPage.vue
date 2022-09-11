@@ -91,7 +91,7 @@ const {
 
     <div class="row mt-4 ">
         <div class="alert alert-primary align-self-start col-12 pt-2 " role="alert">
-                Распределение закупок: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                Распределение закупок: 
                 <span v-for="(i, index) in typesContracts">
                     <b-hint :tip="index == 0 ? 'Закупка по потребности – сбор коммерческих предложений в форме ставок участников для заключения контракта с любым из них' 
                                 : index==1 ? 'Котировочная сессия – переговоры по инициативе заказчика о существенных условиях предложения поставщика для заключении контракта' 
@@ -113,7 +113,7 @@ const {
         </div>
     </PopularItems>
 
-    <PopularItems class="mt-4" title="Ваши категории" :items="popularCategoryItems" v-slot="{item, index}">
+    <PopularItems class="mt-4" title="Ваши категории" :items="popularCategoryItems" v-slot="{item, index}" >
         <div class="d-flex flex-column justify-content-center align-items-center h-100">
             <h3>{{index + 1}}</h3>
             <div class="flex-grow-1 d-flex pb-2 fw-bold align-items-center text-center">{{ item.category }}</div>
