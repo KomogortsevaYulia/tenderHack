@@ -1,6 +1,4 @@
 from datetime import datetime
-import json
-import sys
 from flask import Flask, request, jsonify
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -12,8 +10,6 @@ from darts import TimeSeries
 from darts.models.forecasting.tcn_model import TCNModel
 from darts.metrics import *
 from darts.dataprocessing.transformers import Scaler
-import logging
-import torch
 
 app = Flask(__name__)
 app.debug = True

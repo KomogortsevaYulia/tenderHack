@@ -28,13 +28,13 @@ class Suppliers {
       }
     );
     if(process.env.NEURAL_HOST_PORT){
-    let response = await axios.post(`http://${process.env.NEURAL_HOST_PORT}/predict`, {'data': list})
-    let readedJson = JSON.parse(response.data['data'])
-    for (var i = 0; i < readedJson['index'].length; i++) {
-      let date = format(new Date(readedJson['index'][i]), 'yyyy-MM-dd')
-      list.push({date:date, count:Math.round(readedJson['data'][i][0])})
-    }
-  }
+        let response = await axios.post(`http://${process.env.NEURAL_HOST_PORT}/predict`, {'data': list}).catch(res => console.log(res))
+        let readedJson = JSON.parse(response.data['data'])
+        for (var i = 0; i < readedJson['index'].length; i++) {
+          let date = format(new Date(readedJson['index'][i]), 'yyyy-MM-dd')
+          list.push({date:date, count:Math.round(readedJson['data'][i][0])})
+        }
+      }
     return res.json(list);
   }
 
@@ -53,7 +53,7 @@ class Suppliers {
     {
       replacements: [req.query.firstDay,req.query.lastDay,req.query.category,req.query.name],
       type: Sequelize.QueryTypes.SELECT,
-    } 
+    }
   );
     return res.json(list);
   }
