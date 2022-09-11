@@ -14,11 +14,13 @@ class Personal {
 
     if (!req.body) return response.sendStatus(400);
     const list = await sequelize.query(
-      `SELECT c.contract_date AS date ,b.category, quantity AS count
+      `SELECT c.contract_date::date AS date ,b.category, sum(quantity) AS count, sum(c.amount) as total_amount, 
+        cast(avg(contract_to_cte.amount / contract_to_cte.quantity)  as int) as avg_amount
       FROM contract_to_cte
       JOIN contracts c ON c.id = contract_to_cte.contract_id
 	  JOIN cte b ON b.id = contract_to_cte.cte_id
-      WHERE c.contract_date > ? and c.contract_date < ? and c.provider_title = ? `,
+      WHERE c.contract_date > ? and c.contract_date < ? and c.provider_title = ?
+       group by c.contract_date::date, b.category `,
       {
         replacements: [req.query.firstDay, req.query.lastDay, PROVIDER_TITLE],
         type: Sequelize.QueryTypes.SELECT,

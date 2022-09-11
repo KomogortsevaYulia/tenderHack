@@ -56,12 +56,20 @@ export function useDynamicChart(data) {
                     label: {
                         backgroundColor: '#6a7985'
                     }
-                }
+                },
             },
             yAxis: {
+                  // {
+                  //     name: 'Flow(m^3/s)',
+                  //     type: 'value'
+                  //   },
+                  //   {
+                  //     name: 'Rainfall(mm)',
+                  //     alignTicks: true,
+                  //     type: 'value',
+                  //   }
                 type: 'value',
                 position: 'left',
-                offset: 45
             },
             // visualMap: [{
             //   show: false,
@@ -73,6 +81,60 @@ export function useDynamicChart(data) {
             //     }
             // }],
             series: [
+                {
+                    name: 'Средняя цена товара в закупке',
+                    type: 'line',
+                    stack: 'Total',
+                    smooth: true,
+                    lineStyle: {
+                        width: 0
+                    },
+                    showSymbol: false,
+                    areaStyle: {
+                        opacity: 0.8,
+                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                            {
+                                offset: 0,
+                                color: 'rgb(128, 255, 165)'
+                            },
+                            {
+                                offset: 1,
+                                color: 'rgb(1, 191, 236)'
+                            }
+                        ])
+                    },
+                    emphasis: {
+                        focus: 'series'
+                    },
+                    data: data.value.map(x => x.avg_amount)
+                },
+                {
+                    name: 'Цена закупки',
+                    type: 'line',
+                    stack: 'Total',
+                    smooth: true,
+                    lineStyle: {
+                        width: 0
+                    },
+                    showSymbol: false,
+                    areaStyle: {
+                        opacity: 0.8,
+                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                            {
+                                offset: 0,
+                                color: 'rgb(128, 255, 165)'
+                            },
+                            {
+                                offset: 1,
+                                color: 'rgb(1, 191, 236)'
+                            }
+                        ])
+                    },
+                    emphasis: {
+                        focus: 'series'
+                    },
+                    data: data.value.map(x =>x.total_amount)
+                },
                 {
                     name: 'Закупки',
                     type: 'line',
@@ -110,7 +172,7 @@ export function useDynamicChart(data) {
                       type:"dashed"
                   },
                   showSymbol: false,
-                  
+
                   emphasis: {
                       focus: 'series'
                   },
@@ -121,7 +183,7 @@ export function useDynamicChart(data) {
                     return null
                   })
               },
-                
+
             ]
         }
     });

@@ -16,27 +16,32 @@ class Suppliers {
 
 
     const list = await sequelize.query(
-      `SELECT c.contract_date::date AS date , sum(quantity) AS count
+      `SELECT c.contract_date::date AS date , sum(quantity) AS count, sum(c.amount) as total_amount, 
+        cast(avg(contract_to_cte.amount / contract_to_cte.quantity)  as int) as avg_amount
       FROM contract_to_cte
       JOIN contracts c ON c.id = contract_to_cte.contract_id
       WHERE contract_to_cte.cte_id in (SELECT id
                     FROM cte
-                    WHERE category = ? )
-                    group by  c.contract_date::date`,
+                    WHERE category = ? 
+     )
+     group by  c.contract_date::date`,
       {
         replacements: [req.query.category],
         type: Sequelize.QueryTypes.SELECT,
       }
     );
 
-    // let response = await axios.post('http://localhost:5000/predict', {'data': list}).catch(res => console.log(res))
-    // let readedJson = JSON.parse(response.data['data'])
-    // for (var i = 0; i < readedJson['index'].length; i++) {
-    //   let date = format(new Date(readedJson['index'][i]), 'yyyy-MM-dd')
-    //   list.push({date:date, count:Math.round(readedJson['data'][i][0])})
-    // }
+    // вызов нейронки для предсказания на 7 недель
+    if(process.env.NEURAL_HOST_PORT){
+        let response = await axios.post(`http://${process.env.NEURAL_HOST_PORT}/predict`, {'data': list}).catch(res => console.log(res))
+        let readedJson = JSON.parse(response.data['data'])
+        for (var i = 0; i < readedJson['index'].length; i++) {
+         let date = format(new Date(readedJson['index'][i]), 'yyyy-MM-dd')
+         list.push({date:date, count:Math.round(readedJson['data'][i][0])})
+        }
+      }
     return res.json(list);
-  } 
+  }
 
   async getContractsSpecifications(req, res) {
     if (!req.body) return response.sendStatus(400);
