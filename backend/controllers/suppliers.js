@@ -28,14 +28,14 @@ class Suppliers {
       }
     );
 
-    let response = await axios.post('http://localhost:5000/predict', {'data': list})
+    let response = await axios.post('http://localhost:5000/predict', {'data': list}).catch(res => console.log(res))
     let readedJson = JSON.parse(response.data['data'])
     for (var i = 0; i < readedJson['index'].length; i++) {
       let date = format(new Date(readedJson['index'][i]), 'yyyy-MM-dd')
       list.push({date:date, count:Math.round(readedJson['data'][i][0])})
     }
     return res.json(list);
-  }
+  } 
 
   async getContractsSpecifications(req, res) {
     if (!req.body) return response.sendStatus(400);
@@ -52,7 +52,7 @@ class Suppliers {
     {
       replacements: [req.query.firstDay,req.query.lastDay,req.query.category,req.query.name],
       type: Sequelize.QueryTypes.SELECT,
-    } 
+    }
   );
     return res.json(list);
   }
