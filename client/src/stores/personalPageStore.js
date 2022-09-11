@@ -154,7 +154,7 @@ export const usePersonalPageStore = defineStore("personalPageStore", () => {
         typesContracts.value = r.data
     }
 
-    async function refetchAll() {
+    const refetchAll = _.debounce(async () => {
         await Promise.all([
             // fetchActiveCategorySpecifications(),
             fetchPopularCategory(),
@@ -163,7 +163,7 @@ export const usePersonalPageStore = defineStore("personalPageStore", () => {
             fetchAnalogProviders(),
             fetchPopularProducts(),
         ])
-    }
+    }, 500)
 
     watch(categories, async () => {
         refetchAll();
