@@ -14,11 +14,13 @@ const modalRef = ref()
 
 
 const filter = ref("")
-const itemsField = computed(() => { itemsField.filter(x =>{
+const itemsField = computed(() => {
+    return cteForRecommendations.value.filter(x =>{
         if (filter.value) {
-            return true
+           
+            return x.title.toLowerCase().includes(filter.value.toLowerCase())
         } else {
-            x.filter.includes(filter.value)
+            return true
         }
     })})
 
@@ -112,8 +114,8 @@ const {
 
                 В качестве сопутствующих товаров закупаются
                 <span v-for="i in item.items">
-                    в <span style="font-weight: bold;">{{ i.percent }}%</span> случаях <span
-                    style="font-weight: bold;">{{ i.category.toLowerCase() }}</span>,
+                    в <span style="font-weight: bold;">{{ i.percent }}%</span> случаев <span
+                    style="font-weight: bold;">{{ i.category.toLowerCase() }}</span>;
                 </span>
             </div>
         </div>
@@ -136,16 +138,18 @@ const {
                     <template v-for="i in providerClients">
                         <span class="list-group-item list-group-item-action" id="list-home-list" data-toggle="list"
                               role="tab"
-                              @click="customerClick(i.customer_title)">{{ i.customer_title }} {{ i.customer_inn }}
-                            {{ i.customer_kpp }} </span>
+                              @click="customerClick(i.customer_title)">{{ i.customer_title }} <br>
+                                <i>ИНН:{{ i.customer_inn }}
+                                КПП: {{ i.customer_kpp }} </i>
+                        </span>
                     </template>
                 </div>
             </div>
             <div class="col-6 d-flex flex-column" style="height: 100%;">
-                <input type="text" class="form-control mb-2">
+                <input type="text" class="form-control mb-2" v-model="filter">
                 <div class="flex-grow-1 pt-3  flex-wrap"
                      style="overflow-y: auto; overflow-x: hidden; display: grid; grid-template-columns: repeat(3, 1fr); grid-gap: 2px">
-                    <template v-for="i in cteForRecommendations">
+                    <template v-for="i in itemsField">
                         <button class="btn btn-sm position-relative bg-light "
                                 style="background-color:darkgray; white-space: normal; ">
                             {{ i.title }}

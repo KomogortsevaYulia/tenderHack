@@ -15,6 +15,7 @@ import {useDynamicChart} from "@/stores/dynamicChart";
 export const useGlobalPageStore = defineStore("globalPageStore", () => {
     const activeCategory = ref(localStorage.getItem("activeCategory") || "Велосипеды");
     const quantityDynamicItems = ref([])
+    const typesContracts = ref([])
     const colorSpecificationsItems = ref([])
     const popularSuppliersItems = ref([])
     const popularCategoryItems = ref([])
@@ -56,6 +57,15 @@ export const useGlobalPageStore = defineStore("globalPageStore", () => {
         popularSuppliersItems.value = r.data;
     }
 
+    async function fetchTypesContracts() {
+        let r = await axios.get("/api/personal/getTypesContracts", {
+            params: {
+                'firstDay': format(dbeg.value, 'dd.MM.yy'),
+                'lastDay': format(dend.value, 'dd.MM.yy'),
+            }
+        })
+        typesContracts.value = r.data
+    }
     async function fetchPopularProducts() {
         let params = {
             'category': activeCategory.value,
@@ -137,6 +147,7 @@ export const useGlobalPageStore = defineStore("globalPageStore", () => {
             fetchActiveCategoryQuantityDynamic(),
             fetchPopularSuppliers(),
             fetchPopularProducts(),
+            fetchTypesContracts(),
             fetchPopularCategory(),
             fetchActiveCategoryRelativeCategories(),
         ])
@@ -167,6 +178,7 @@ export const useGlobalPageStore = defineStore("globalPageStore", () => {
         refetchAll,
 
         loadingPopularSuppliers,
+        typesContracts,
         loadingPopularProducts,
         loadingPopularCategory,
         loadingActiveCategorySpecifications,

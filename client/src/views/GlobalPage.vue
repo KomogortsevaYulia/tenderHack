@@ -17,6 +17,7 @@ const {
     popularCategoryItems,
     popularProductsItems,
     activePeriod,
+    typesContracts,
     relativeCategories,
 
     loadingPopularSuppliers,
@@ -75,11 +76,18 @@ const {
     </div>
 
     <div class="row mt-4 ">
+        <div class="alert alert-primary col me-2" role="alert">
+            В качестве сопутствующих товаров закупаются <br>
+            <span v-for="i in relativeCategories">
+                в {{i.percent}}% случаев {{i.category.toLowerCase()}}; <br>
+            </span>
+        </div>
         <div class="alert alert-primary col" role="alert">
 
-            {{activeCategory}} продаются так же с:<br>
-            <span v-for="i in relativeCategories">
-                {{i.percent}}% - {{i.category}} <br>
+            Распределение закупок: <br>
+
+            <span v-for="i in typesContracts">
+                {{ i.value }} - {{ i.count }} <br>
             </span>
         </div>
     </div>
